@@ -1,0 +1,93 @@
+body {
+  font-family: "Lato", sans-serif;
+}
+
+
+.main-head{
+  height: 150px;
+  background: #FFF;
+}
+
+.sidenav {
+  display: flex;
+  align-content: center;
+  height: 100%;
+  /* background-color: #000; */
+  background: #134E5E;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #71B280, #134E5E);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #71B280, #134E5E); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  overflow-x: hidden;
+  padding-top: 20px;
+}
+
+.main {
+  padding: 20px 10px;
+  display: flex;
+  align-content: center;
+}
+
+.login-form{
+  margin-top: 60%;
+}
+
+.EM-form{
+  display: flex;
+  align-content: center;
+  justify-content: space-around;
+}
+
+.btn-color{
+  background-color: #134E5E;
+}
+
+
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+}
+
+@media screen and (max-width: 450px) {
+  .register-form{
+      margin-top: 10%;
+  }
+}
+
+@media screen and (min-width: 768px){
+
+  .main{
+      margin-left: 40%; 
+  }
+
+  .sidenav{
+      width: 40%;
+      position: fixed;
+      z-index: 1;
+      top: 0;
+      left: 0;
+  }
+
+  .register-form{
+    margin-top: 20%;
+  }
+}
+
+@media (max-width: 768px) {
+  .login-form{
+    margin-top: 10%;
+  }
+}
+
+
+.login-main-text{
+  margin: auto;
+  padding: 60px;
+  color: #fff;
+}
+
+.login-main-text h2{
+  font-weight: 300;
+}
+
+.btn-black{
+  background-color: #000 !important;
+  color: #fff;
+}
