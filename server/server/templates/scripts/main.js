@@ -8,7 +8,15 @@ function handleRegister() {
   var municipio = document.getElementById("municipioR").value;
 
   const dataRegister ={ indicativo, contrasena ,nombre, apellidoP, apellidoM, estado, municipio };
-  console.log("Registrar:",dataRegister)
+  
+  if(indicativo == "" || contrasena == "" || nombre == "" || apellidoP == "" || apellidoM == "" || estado == "" || municipio == ""){
+    var formRegister = document.querySelectorAll('#register');
+    formRegister[0].classList.remove('was-validated');
+    formRegister[0].classList.add('was-validated');
+  }
+  else{
+    console.log("Registrar:",dataRegister)
+  }
 }
 
 function handleLogin(){
@@ -16,5 +24,13 @@ function handleLogin(){
   var contrasena = document.getElementById("contrasenaL").value;
 
   const dataRegister ={ indicativo, contrasena };
-  console.log("Login:",dataRegister)
+  
+  if(indicativo == "" || contrasena == ""){
+    var formLogin = document.querySelectorAll('#login');
+    formLogin[0].classList.remove('was-validated');
+    formLogin[0].classList.add('was-validated');
+  }
+  else{
+    console.log("Login:",dataRegister);
+  }
 }

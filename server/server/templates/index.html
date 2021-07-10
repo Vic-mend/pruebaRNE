@@ -13,7 +13,8 @@
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   </head>
   <body>
-    <div class="sidenav">
+
+<div class="sidenav">
       <div class="login-main-text">
           <h1>Experimentos relacionados con el estudio de los efectos del canal de propagación ionosférica.</h1>
           <p>Inicia sesión o Registrate para accesar.</p>
@@ -22,17 +23,19 @@
     <div class="main">
       <div class="col-md-6 col-sm-12">
           <div class="login-form">
-            <!-- <form class="was-validated" novalidate> -->
-            <form>
-                <div class="form-group has-validation">
+            <form id="login" novalidate>
+                <div class="form-group">
                   <label>Indicativo</label>
                   <input type="text" class="form-control" placeholder="Indicativo" id="indicativoL" name="indicativoL" required>
+                  <div class="invalid-feedback">
+                    Ingrese un indicativo
+                  </div>
                 </div>
-                <div class="form-group has-validation">
+                <div class="form-group">
                   <label>Contraseña</label>
                   <input type="password" class="form-control" placeholder="Contraseña" id="contrasenaL" name="contrasenaL" required>
                   <div class="invalid-feedback">
-                    Please choose a username.
+                    Ingrese una contraseña
                   </div>
                 </div>
             </form>
@@ -49,42 +52,60 @@
             <h5 class="modal-title" id="exampleModalLabel">Registro</h5>
           </div>
           <div class="modal-body">
-            <form id="myForm">
-              <div class="mb-1">
+            <form id="register" novalidate>
+              <div class="mb-0">
                 <label for="indicativoR" class="col-form-label">Indicativo:</label>
                 <input type="text" class="form-control" id="indicativoR" name="indicativoR" required>
+                <div class="invalid-feedback">
+                  Ingrese un indicativo
+                </div>
               </div>
-              <div class="mb-2">
+              <div class="mb-0">
                 <label for="contrasenaR" class="col-form-label">Contraseña:</label>
                 <input type="password" class="form-control" id="contrasenaR" name="contrasenaR" required>
+                <div class="invalid-feedback">
+                  Ingrese una contraseña
+                </div>
               </div>
-              <div class="mb-1">
+              <div class="mb-0">
                 <label for="nombreR" class="col-form-label">Nombre(s):</label>
                 <input type="text" class="form-control" id="nombreR" name="nombreR" required>
                 <div class="invalid-feedback">
-                  Please provide a valid city.
+                  Ingrese un nombre(s)
+                </div>
+              </div>
+              <div class="mb-0">
+                <label for="apellidoPR" class="col-form-label">Apellido Paterno:</label>
+                <input type="text" class="form-control" id="apellidoPR" name="apellidoPR" required>
+                <div class="invalid-feedback">
+                  Ingrese un apellido paterno
                 </div>
               </div>
               <div class="mb-1">
-                <label for="apellidoPR" class="col-form-label">Apellido Paterno:</label>
-                <input type="text" class="form-control" id="apellidoPR" name="apellidoPR" required>
-              </div>
-              <div class="mb-2">
                 <label for="apellidoMR" class="col-form-label">Apellido Materno:</label>
                 <input type="text" class="form-control" id="apellidoMR" name="apellidoMR" required>
+                <div class="invalid-feedback">
+                  Ingrese un apellido materno
+                </div>
               </div>
-              <div class="mb-2 ">
+              <div class="mb-0">
                 <div>
                   <label for="estadoR" class="col-form-label">Estado:</label>
-                  <select class="form-select form-select-lg mb-2" aria-label="Default select example" id="estadoR" name="estadoR" required>
+                  <select class="form-select mb-2" aria-label="Default select example" id="estadoR" name="estadoR" required>
                     <option selected value=""></option>                    
                   </select>
+                  <div class="invalid-feedback">
+                    Escoja un estado
+                  </div>
                 </div>
                 <div>
                   <label for="municipioR" class="col-form-label">Municipio:</label>
                   <select class="form-select form-select-lg mb-2 text-uppercase" aria-label="Default select example" id="municipioR" name="municipioR" required>
                     
                   </select>
+                  <div class="invalid-feedback">
+                    Escoja un municipio
+                  </div>
                 </div>
               </div>
             </form>
@@ -96,6 +117,7 @@
         </div>
       </div>
     </div>
+
     <script src="{% static 'scripts/main.js' %}"></script>
     <script>
       $.getJSON("{% static './resources/estados.json' %}", function(json) {
