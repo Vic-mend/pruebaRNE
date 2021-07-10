@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listado de Radioaficionados </title>
+</head>
+<body>
+    <h1>Listado de Radioaficionados </h1>
+    <table border="2">
+    <thead>
+        <tr>
+            <th> Indicativo </th>
+            <th> Password </th>
+            <th> Nombre </th>
+            <th> Appelido Paterno </th>
+            <th> Appelido Materno </th>
+            <th> Municipio </th>
+            <th> Estado </th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for rad in radio%}
+        <tr>
+            <td>{{rad.indicativo}}</td>
+            <td>{{rad.password}}</td>
+            <td>{{rad.nombre}}</td>
+            <td>{{rad.apellidoP}}</td>
+            <td>{{rad.apellidoM}}</td>
+            <td>{{rad.municipio}}</td>
+            <td>{{rad.estado}}</td>
+        </tr>
+        {%endfor%}
+    </tbody>
+    </table>
+</body>
+</html>

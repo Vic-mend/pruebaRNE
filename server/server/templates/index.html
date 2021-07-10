@@ -52,7 +52,8 @@
             <h5 class="modal-title" id="exampleModalLabel">Registro</h5>
           </div>
           <div class="modal-body">
-            <form id="register" novalidate>
+            <form id="register" action="register/" method="POST" novalidate>
+              {% csrf_token %}
               <div class="mb-0">
                 <label for="indicativoR" class="col-form-label">Indicativo:</label>
                 <input type="text" class="form-control" id="indicativoR" name="indicativoR" required>
@@ -108,12 +109,16 @@
                   </div>
                 </div>
               </div>
+
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="submit" class="btn btn-color text-white" onclick="handleRegister()">Registrarse</button>
+              </div>
+
+
             </form>
           </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-            <button type="button" class="btn btn-color text-white" onclick="handleRegister()">Registrarse</button>
-          </div>
+          
         </div>
       </div>
     </div>
