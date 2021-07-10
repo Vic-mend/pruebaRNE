@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+      <title>Remeasat</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+      <link rel="stylesheet" href="./styles/styles.css">
+
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </head>
+  <body>
+    <div class="sidenav">
+      <div class="login-main-text">
+          <h1>Experimentos relacionados con el estudio de los efectos del canal de propagación ionosférica.</h1>
+          <p>Inicia sesión o Registrate para accesar.</p>
+      </div>
+    </div>
+    <div class="main">
+      <div class="col-md-6 col-sm-12">
+          <div class="login-form">
+            <form id="login" novalidate>
+                <div class="form-group">
+                  <label>Indicativo</label>
+                  <input type="text" class="form-control" placeholder="Indicativo" id="indicativoL" name="indicativoL" required>
+                  <div class="invalid-feedback">
+                    Ingrese un indicativo
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label>Contraseña</label>
+                  <input type="password" class="form-control" placeholder="Contraseña" id="contrasenaL" name="contrasenaL" required>
+                  <div class="invalid-feedback">
+                    Ingrese una contraseña
+                  </div>
+                </div>
+            </form>
+            <button type="submit" class="btn btn-color text-white" onclick="handleLogin()">Iniciar Sesión</button>
+            <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#registerModal" id="registro">Registrarse</button>
+          </div>
+      </div>
+    </div>
+
+    <div class="modal fade show modBack" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Registro</h5>
+          </div>
+          <div class="modal-body">
+            <form id="register" novalidate>
+              <div class="mb-0">
+                <label for="indicativoR" class="col-form-label">Indicativo:</label>
+                <input type="text" class="form-control" id="indicativoR" name="indicativoR" required>
+                <div class="invalid-feedback">
+                  Ingrese un indicativo
+                </div>
+              </div>
+              <div class="mb-0">
+                <label for="contrasenaR" class="col-form-label">Contraseña:</label>
+                <input type="password" class="form-control" id="contrasenaR" name="contrasenaR" required>
+                <div class="invalid-feedback">
+                  Ingrese una contraseña
+                </div>
+              </div>
+              <div class="mb-0">
+                <label for="nombreR" class="col-form-label">Nombre(s):</label>
+                <input type="text" class="form-control" id="nombreR" name="nombreR" required>
+                <div class="invalid-feedback">
+                  Ingrese un nombre(s)
+                </div>
+              </div>
+              <div class="mb-0">
+                <label for="apellidoPR" class="col-form-label">Apellido Paterno:</label>
+                <input type="text" class="form-control" id="apellidoPR" name="apellidoPR" required>
+                <div class="invalid-feedback">
+                  Ingrese un apellido paterno
+                </div>
+              </div>
+              <div class="mb-1">
+                <label for="apellidoMR" class="col-form-label">Apellido Materno:</label>
+                <input type="text" class="form-control" id="apellidoMR" name="apellidoMR" required>
+                <div class="invalid-feedback">
+                  Ingrese un apellido materno
+                </div>
+              </div>
+              <div class="mb-0">
+                <div>
+                  <label for="estadoR" class="col-form-label">Estado:</label>
+                  <select class="form-select mb-2" aria-label="Default select example" id="estadoR" name="estadoR" required>
+                    <option selected value=""></option>                    
+                  </select>
+                  <div class="invalid-feedback">
+                    Escoja un estado
+                  </div>
+                </div>
+                <div>
+                  <label for="municipioR" class="col-form-label">Municipio:</label>
+                  <select class="form-select form-select-lg mb-2 text-uppercase" aria-label="Default select example" id="municipioR" name="municipioR" required>
+                    
+                  </select>
+                  <div class="invalid-feedback">
+                    Escoja un municipio
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            <button type="button" class="btn btn-color text-white" onclick="handleRegister()">Registrarse</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="./scripts/main.js"></script>
+  </body>
+</html>
+
