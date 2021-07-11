@@ -23,7 +23,8 @@
     <div class="main">
       <div class="col-md-6 col-sm-12">
           <div class="login-form">
-            <form id="login" novalidate>
+            <form id="login" method="POST" action="" novalidate>
+              {% csrf_token %}
                 <div class="form-group">
                   <label>Indicativo</label>
                   <input type="text" class="form-control" placeholder="Indicativo" id="indicativoL" name="indicativoL" required>
@@ -38,9 +39,11 @@
                     Ingrese una contraseña
                   </div>
                 </div>
+                <button type="submit" class="btn btn-color text-white" onclick="handleLogin()">Iniciar Sesión</button>
+                <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#registerModal" id="registro">Registrarse</button>
             </form>
-            <button type="submit" class="btn btn-color text-white" onclick="handleLogin()">Iniciar Sesión</button>
-            <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#registerModal" id="registro">Registrarse</button>
+            
+            
           </div>
       </div>
     </div>

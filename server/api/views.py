@@ -1,8 +1,28 @@
 from django.shortcuts import redirect, render
 from django.http import HttpResponse
 from .models import radioaficionados 
+from django.contrib.auth import authenticate, login, logout
+
 # Create your views here.
 def login(request):
+    if request.method == 'POST':
+        """usrname = request.POST['indicativoL']
+        usrpass = request.POST['contrasenaL']
+        usr_rad = authenticate(request, username = usrname, password = usrpass)
+
+        if usr_rad is not None:
+            return HttpResponse('LogIn exitoso')
+        else: 
+            return HttpResponse('Datos erroneos')"""
+        if radioaficionados.objects.filter(indicativo = request.POST['indicativoL']).exists():
+            tolog = radioaficionados.objects.get(indicativo = request.POST['indicativoL'])
+            if tolog.password == request.POST['contrasenaL']:          
+                return HttpResponse('LogIn exitoso')
+            else:
+                return HttpResponse('Datos erroneos')
+        else :
+            return HttpResponse('Indicativo equivocado')
+
     return render(request, "index.html")
 
 
