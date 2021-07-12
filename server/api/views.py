@@ -1,27 +1,39 @@
 from django.shortcuts import redirect, render
 from django.http import HttpResponse
 from .models import radioaficionados 
+from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
+from django.contrib import messages
+from django.contrib.auth import get_user_model
+
+from django.contrib.auth.decorators import login_required
+from .decorators import unauthenticated_user
+
+from .helpfunctions import concatpass
 
 # Create your views here.
-def login(request):
+@unauthenticated_user
+def loginUsr(request):
     if request.method == 'POST':
-        """usrname = request.POST['indicativoL']
+        usrname = request.POST['indicativoL']
         usrpass = request.POST['contrasenaL']
         usr_rad = authenticate(request, username = usrname, password = usrpass)
 
         if usr_rad is not None:
-            return HttpResponse('LogIn exitoso')
+            login(request,usr_rad)
+            #return HttpResponse('LogIn exitoso')
+            return redirect("home")
         else: 
-            return HttpResponse('Datos erroneos')"""
-        if radioaficionados.objects.filter(indicativo = request.POST['indicativoL']).exists():
+            messages.info(request,'Datos erroneos')
+            #return HttpResponse('Datos erroneos')
+        """if radioaficionados.objects.filter(indicativo = request.POST['indicativoL']).exists():
             tolog = radioaficionados.objects.get(indicativo = request.POST['indicativoL'])
             if tolog.password == request.POST['contrasenaL']:          
                 return HttpResponse('LogIn exitoso')
             else:
                 return HttpResponse('Datos erroneos')
         else :
-            return HttpResponse('Indicativo equivocado')
+            return HttpResponse('Indicativo equivocado')"""
 
     return render(request, "index.html")
 
@@ -29,12 +41,17 @@ def login(request):
 def main(request):
     #return HttpResponse('Hello')
     rad = radioaficionados.objects.all()
+    retUser = get_user_model()
+    retusers = retUser.objects.all()
     print(rad)
+    newlist = concatpass(rad,retusers)
     context = {
-        'radio' : rad
+        'radio' : newlist,
+        
     }
     return render(request,'radlist.html', context)
 
+@unauthenticated_user
 def register(request):
     if request.method == 'GET':
         return redirect('index')
@@ -50,8 +67,21 @@ def register(request):
         new_rad.municipio = request.POST['municipioR']
         new_rad.estado = request.POST['estadoR']
         new_rad.save()
-        
+        nuser = User.objects.create_user(new_rad.indicativo, '', new_rad.password)
+        nuser.last_name = "{} {}".format(new_rad.nombre,new_rad.apellidoP)
+        nuser.save()
+        messages.success(request,'Usuario ' + new_rad.indicativo +' creado')
         return redirect('index')
+
+@login_required(login_url='index')
+def home(request):
+    return render(request, "home.html")
+
+@login_required(login_url='index')
+def logoutUser(request):
+    logout(request)
+    return redirect("index")
+
 
 """def register(request):
     if request.method == 'GET':

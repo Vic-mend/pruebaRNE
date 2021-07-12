@@ -13,6 +13,7 @@
         <tr>
             <th> Indicativo </th>
             <th> Password </th>
+            <th> PasswordC </th>
             <th> Nombre </th>
             <th> Appelido Paterno </th>
             <th> Appelido Materno </th>
@@ -21,18 +22,21 @@
         </tr>
     </thead>
     <tbody>
-        {% for rad in radio%}
+        {% for rad in radio %}
         <tr>
             <td>{{rad.indicativo}}</td>
-            <td>{{rad.password}}</td>
+            <td>{{rad.password}} </td>
+            <td>{{rad.cpass}} </td>
             <td>{{rad.nombre}}</td>
             <td>{{rad.apellidoP}}</td>
             <td>{{rad.apellidoM}}</td>
             <td>{{rad.municipio}}</td>
             <td>{{rad.estado}}</td>
         </tr>
-        {%endfor%}
+        {% endfor %}
     </tbody>
     </table>
+
+    
 </body>
 </html>

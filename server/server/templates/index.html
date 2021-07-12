@@ -43,7 +43,9 @@
                 <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#registerModal" id="registro">Registrarse</button>
             </form>
             
-            
+            {% for message in messages %}
+              <span id="message"> {{message}} </span>
+            {% endfor %}
           </div>
       </div>
     </div>
