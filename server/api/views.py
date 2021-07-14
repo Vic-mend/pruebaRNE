@@ -7,7 +7,7 @@ from django.contrib import messages
 from django.contrib.auth import get_user_model
 
 from django.contrib.auth.decorators import login_required
-from .decorators import unauthenticated_user
+from .decorators import unauthenticated_user, allowed_users
 
 from .helpfunctions import concatpass
 
@@ -37,7 +37,8 @@ def loginUsr(request):
 
     return render(request, "index.html")
 
-
+@login_required(login_url='index')
+@allowed_users(allowed_roles = ['administrators'])
 def main(request):
     #return HttpResponse('Hello')
     rad = radioaficionados.objects.all()
