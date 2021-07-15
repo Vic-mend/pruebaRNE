@@ -78,6 +78,10 @@ def home(request):
     return render(request, "home.html")
 
 @login_required(login_url='index')
+def estacionTerrena(request):
+    return render(request, "estacionTerrena.html")
+
+@login_required(login_url='index')
 def logoutUser(request):
     logout(request)
     return redirect("index")

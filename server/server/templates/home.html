@@ -16,22 +16,36 @@
 
 </head>
 <body>
-  <nav class="navbar navbar-expand-lg navbar-light justify-content-center" 
-    style="background: #134E5E;
-    background: -webkit-linear-gradient(to right, #71B280, #134E5E);  
-    background: linear-gradient(to right, #71B280, #134E5E);"
-  >
-    <div class="container-fluid">
-      <a class="navbar-brand" href="/">Bienvenido {{request.user}}!</a>
+  <nav class="navbar navbar-expand-lg navbar-light justify-content-center" style="background: #134E5E; background: -webkit-linear-gradient(to right, #71B280, #134E5E); background: linear-gradient(to right, #71B280, #134E5E);">    
+    <a class="navbar-brand text-white mr-0" href="/">¡Bienvenido {{request.user}}!</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+      <div class="mx-auto">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active mr-3 ml-3">
+            <a class="nav-link text-white" href="{% url 'home' %}">Home<span class="sr-only"></span></a>
+          </li>
+          <li class="nav-item  active mr-3 ml-3">
+            <a class="nav-link text-white" href="{% url 'estacionTerrena' %}">Estación Terrena</a>
+          </li>
+          <li class="nav-item  active mr-3 ml-3">
+            <a class="nav-link text-white" href="{% url 'estacionTerrena' %}">Reportes</a>
+          </li>
+        </ul>
+      </div>
       
-        <form class="d-flex" method="GET" action="{% url 'logout' %}">
-          <button class="btn btn-secondary" type="submit"> Salir</button>
-        </form>
+      <form class="d-flex mr-3 ml-5" method="GET" action="{% url 'logout' %}">
+        <button class="btn btn-secondary" type="submit"> Salir</button>
+      </form>
     </div>
   </nav>
+
     <div class="alert alert-primary" role="alert">
         <MARQUEE WIDTH=100% > Próximo experimento dentro de 24 hrs. </MARQUEE>
     </div>
+    
     <div class="row" style="margin-left: 15px; margin-right: 0px;">
         <div class="col-md-4 col-sm-12 mt-2 border rounded p-5" style="border-width: 2px!important;">
             <div >
@@ -189,17 +203,22 @@
         </div>
     </div>
 
-    <footer class="bg-light text-center text-lg-start" style="position: fixed; bottom: 0; width: 100%;">
-        <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
-            <div style="position:static; bottom: 0; display: flex;  justify-content:space-between; ">
-                <a href="https://www.ipn.mx/"><img src="{% static 'resources/ipnC.png' %}"  style="width: 25%;"></a>
-                <a href="https://www.unam.mx/"><img src="{% static 'resources/unam.png' %}" style="width: 7%;"></a>
-                
-                <a href="https://fmre.mx/"><img src="{% static 'resources/FMRE.png' %}" style="width: 30%;"></a>
-                <a href="https://www.upiita.ipn.mx/"><img src="{% static 'resources/upiita.png' %}" style="width: 15%;"></a>
-              </div>
-              <p style="margin-top: -50px;">© 2021 Copyright: Odyssey Corp.</p>
-        </div>
-    </footer>
+  <footer class="bg-light text-center text-lg-start" style="margin-top: 45px;">
+    <div class="row text-center mr-0 ml-0 p-2" style="display:flex; background-color: rgba(0, 0, 0, 0.2);">
+      <div class="col-md-5 pr-0 pl-0">
+        <a class="ml-5 mr-5" href="https://www.ipn.mx/"><img class="img-fluid" src="{% static 'resources/ipnC.png' %}"  style="width: 6%;"></a>
+        <a class="ml-5 mr-5" href="https://www.unam.mx/"><img class="img-fluid" src="{% static 'resources/unam.png' %}" style="width: 8%;"></a>
+        <a class="ml-5 mr-5" href="https://www.ucm.es/"><img class="img-fluid" src="{% static 'resources/complutense.png' %}" style="width: 8%;"></a>
+      </div>
+      <div class="col-md-2 pr-0 pl-0 align-middle mt-2 mb-2" style="display: flex; align-items: center;">
+        <p class="mx-auto mb-0">© 2021 Copyright: Odyssey Corp.</p>
+      </div>
+      <div class="col-md-5 pr-0 pl-0">
+        <a class="ml-5 mr-5" href="https://fmre.mx/"><img class="mx-auto" src="{% static 'resources/FMRE.png' %}" style="width: 6%;"></a>
+        <a class="ml-5 mr-5" href="https://www.upiita.ipn.mx/"><img class="mx-auto" src="{% static 'resources/upiita.png' %}" style="width: 11%; margin-top: 10px;"></a>
+        <a class="ml-5 mr-5" href="https://www.cinvestav.mx/"><img class="mx-auto" src="{% static 'resources/cinvestav.png' %}" style="width: 10%;"></a>
+      </div>
+    </div>
+  </footer>
 </body>
 </html>
