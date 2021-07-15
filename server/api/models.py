@@ -26,3 +26,17 @@ class bitacoras(models.Model):
     modulacion = models.CharField(max_length=10, blank=True)
     reporte1 = models.CharField(max_length=10, blank=True)
     reporte2 = models.CharField(max_length=10, blank=True)
+
+class estaciones_terrenas(models.Model):
+    indicativo = models.ForeignKey(radioaficionados, on_delete=models.CASCADE)
+    nombre_estacion = models.CharField(max_length=30, blank=False)
+    marca = models.CharField(max_length=30, blank=False)
+    modelo = models.CharField(max_length=40, blank=False)
+    antena = models.CharField(max_length=30, blank=False)
+    tipo_antena = models.CharField(max_length=20 ,blank=False)
+    ganancia = models.IntegerField(blank=True)
+    frecuencia = models.CharField(max_length=20, blank=False)
+    polarizacion  = models.CharField(max_length=20, blank=False)
+    altura = models.DecimalField(max_digits=7, decimal_places=4, blank=False)
+    modulacion = models.CharField(max_length=10, blank=False, null=True)
+    grid = models.CharField(max_length=10, blank=False)

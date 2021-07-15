@@ -1,6 +1,6 @@
 from django.shortcuts import redirect, render
 from django.http import HttpResponse
-from .models import radioaficionados 
+from .models import radioaficionados , estaciones_terrenas
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
@@ -103,5 +103,24 @@ def logoutUser(request):
         return redirect('index')"""
 
 
+def estacionTerrena(request):
+    usr = radioaficionados(request.user)
+    tus_estaciones = estaciones_terrenas.objects.filter(indicativo=usr)
+    context= {'estaciones' : tus_estaciones}
+    if request.method == 'POST':
+        new_est = estaciones_terrenas()
+        new_est.nombre_estacion= request.POST['nombre']
+        new_est.marca = request.POST['marca']
+        new_est.modelo = request.POST['modelo']
+        new_est.grid = request.POST['grid']
+        new_est.antena = request.POST['antena']
+        new_est.tipo_antena = request.POST['tipo']
+        new_est.ganancia = request.POST['ganancia']
+        new_est.polarizacion = request.POST['polarizacion']
+        new_est.altura = request.POST['altura']
+        new_est.modulacion = request.POST['formato']
+        new_est.indicativo = usr # Lo del radioexperimentador
+        #falta modulacion
+        new_est.save() #Checar como es que se 
 
-
+    return render(request,"estacionTerrena.html",context)#checar
