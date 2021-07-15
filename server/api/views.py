@@ -88,35 +88,43 @@ def logoutUser(request):
 def csvhandler(request):
     data = {}
     if "GET" == request.method:
-	    return render(request, "csvform.html")
+        return render(request, "csvform.html")
     # if not GET, then proceed
     try:
-	    csv_file = request.FILES["csv_file"]
-	    if not csv_file.name.endswith('.csv'):
-		    messages.error(request,'File is not CSV type')
-		    return HttpResponse('Not a csv')
+        csv_file = request.FILES["csv_file"]
+        fname = csv_file.name
+        if (not fname.endswith('.csv')) and (not fname.endswith('.TXT')) and (not fname.endswith('.CSV')) and (not fname.endswith('.txt')) :
+
+            messages.error(request,'File is not CSV or TXT type')
+            return HttpResponse('Not a csv or txt')
         #if file is too large, return
-	    if csv_file.multiple_chunks():
-	    	messages.error(request,"Uploaded file is too big (%.2f MB)." % (csv_file.size/(1000*1000),))
-	    	return HttpResponse('Archivo muy grande')
+        """if csv_file.multiple_chunks():
+            messages.error(request,"Uploaded file is too big (%.2f MB)." % (csv_file.size/(1000*1000),))
+            return HttpResponse('Archivo muy grande')
+        """
+        file_data = csv_file.read().decode("utf-8")		
 
-	    file_data = csv_file.read().decode("utf-8")		
-
-	    lines = file_data.split("\n")
+        lines = file_data.split("\n")
 		#loop over the lines and save them in db. If error , store as string and then display
-	    for line in lines:						
-	    	fields = line.split(",")
-	    	data_dict = {}
-	    	data_dict["name"] = fields[0]
-	    	data_dict["start_date_time"] = fields[1]
-	    	data_dict["end_date_time"] = fields[2]
-	    	data_dict["notes"] = fields[3]
-	    	print(data_dict)
+        if csv_file.name.endswith('.csv') or csv_file.name.endswith('.CSV'):
+            for line in lines:						
+                fields = line.split(",")
+                #""data_dict = {}
+                """data_dict["name"] = fields[0]
+                data_dict["start_date_time"] = fields[1]
+                data_dict["end_date_time"] = fields[2]
+                data_dict["notes"] = fields[3]"""
+                print(fields)
+        elif csv_file.name.endswith('.txt') or csv_file.name.endswith('.TXT'):
+            for line in lines:						
+                fields = line.split("   ")
+                
+                print(fields)
 
     except Exception as e:
     	#logging.getLogger("error_logger").error("Unable to upload file. "+repr(e))
-    	messages.error(request,"Unable to upload file. "+repr(e))
-
+        messages.error(request,"Unable to upload file. "+repr(e))
+    
     return HttpResponse('Hecho')
         
 
