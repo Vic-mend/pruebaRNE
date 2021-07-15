@@ -13,15 +13,20 @@
           <a class="list-group-item list-group-item-action active" id="list-home-list" data-toggle="list" href="#list-agregar" role="tab">
             Agregar una Estación<i class="icon-plus" style="margin-left: 20px;"></i>
           </a>
-          <a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list" href="#list-estación-1" role="tab">
-            Estación 1<i class="icon-cog" style="margin-left: 20px;"></i>
-          </a>
-          <a class="list-group-item list-group-item-action" id="list-messages-list" data-toggle="list" href="#list-estación-2" role="tab">
-            Estación 2<i class="icon-cog" style="margin-left: 20px;"></i>
-          </a>
-          <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list" href="#list-estación-3" role="tab">
-            Estación 3<i class="icon-cog" style="margin-left: 20px;"></i>
-          </a>
+
+          {% if estaciones %}
+            {% for estacion in estaciones %}
+                <a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list" href="" role="tab">
+                  {{estacion.nombre_estacion}}<i class="icon-cog" style="margin-left: 20px;"></i>
+                  <!-- /{{estacion.id}} -->
+                </a>
+            {% endfor %}
+
+          {% else %}
+              <a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list" href="#list-estación-1" role="tab">
+                Sin Estaciones<i class="icon-cog" style="margin-left: 20px;"></i>
+              </a>
+          {% endif %}
         </div>
       </div>
     </div>
@@ -29,38 +34,38 @@
     <div class="col-md-7 col-sm-12 mt-2 ml-5 border rounded" style="border-width: 2px!important; max-height: 650px;  overflow: auto; max-width: 100%;">
       <div class="p-2">
         <form id="" action="" method="POST" novalidate>
-            <!-- {% csrf_token %} -->
+            {% csrf_token %}
             <div class="mb-0">
               <label for="nombre" class="col-form-label">Nombre de la Estación:</label>
-              <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Estación Principal" required>
+              <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Ej: Estación Principal" required>
               <div class="invalid-feedback">
                 Ingrese un nombre para su estación
               </div>
             </div>
             <div class="mb-0">
               <label for="marca" class="col-form-label">Marca del Equipo:</label>
-              <input type="text" class="form-control" id="marca" name="marca" placeholder="Yaesu" required>
+              <input type="text" class="form-control" id="marca" name="marca" placeholder="Ej: Yaesu" required>
               <div class="invalid-feedback">
                 Ingrese una marca del equipo
               </div>
             </div>
             <div class="mb-0">
                 <label for="modelo" class="col-form-label">Modelo del Equipo:</label>
-                <input type="text" class="form-control" id="modelo" name="modelo" placeholder="FT-123X"required>
+                <input type="text" class="form-control" id="modelo" name="modelo" placeholder="Ej: FT-123X"required>
                 <div class="invalid-feedback">
                   Ingrese un modelo del equipo
                 </div>
             </div>            
             <div class="mb-0">
               <label for="grid" class="col-form-label">Grid Locator:</label>
-              <input type="text" class="form-control" id="grid" name="grid" placeholder="DK9HX3" required>
+              <input type="text" class="form-control" id="grid" name="grid" placeholder="Ej: DK9HX3" required>
               <div class="invalid-feedback">
                 Ingrese un Grid Locator
               </div>
             </div>
             <div class="mb-0">
                 <label for="antena" class="col-form-label">Antena:</label>
-                <input type="text" class="form-control" id="antena" name="antena" placeholder="Yagi"required>
+                <input type="text" class="form-control" id="antena" name="antena" placeholder="Ej: Yagi"required>
                 <div class="invalid-feedback">
                   Ingrese una antena
                 </div>
@@ -74,32 +79,33 @@
             </div>
             <div class="mb-0">
               <label for="ganancia" class="col-form-label">Ganancia [dBi]: (opcional)</label>
-              <input type="text" class="form-control" id="ganancia" name="ganancia" placeholder="20">
+              <input type="text" class="form-control" id="ganancia" name="ganancia" placeholder="Ej: 20">
             </div>
+            <!-- frecuencias no va o si? -->
             <!-- <div class="mb-0">
               <label for="frecuencia" class="col-form-label">Intervalo de frecuencias de operación [MHz]:</label>
-              <input type="text" class="form-control" id="frecuencia" name="frecuencia" placeholder="145" required>
+              <input type="text" class="form-control" id="frecuencia" name="frecuencia" placeholder="Ej: 145" required>
               <div class="invalid-feedback">
                 Ingrese un intervalo de frecuencias de operación
               </div>
             </div> -->
             <div class="mb-0">
               <label for="polarizacion" class="col-form-label">Polarización:</label>
-              <input type="text" class="form-control" id="polarizacion" name="polarizacion" placeholder="Circular" required>
+              <input type="text" class="form-control" id="polarizacion" name="polarizacion" placeholder="Ej: Circular" required>
               <div class="invalid-feedback">
                 Ingrese una polarización
               </div>
             </div>
             <div class="mb-0">
               <label for="altura" class="col-form-label">Altura sobre el piso [m]:</label>
-              <input type="text" class="form-control" id="altura" name="altura" placeholder="10">
+              <input type="text" class="form-control" id="altura" name="altura" placeholder="Ej: 10">
               <div class="invalid-feedback">
                 Ingrese una altura sobre el piso dado en metros
               </div>
             </div>
             <!-- <div class="mb-0">
               <label for="ubicacion" class="col-form-label">Ubicación de la antena respecto a objetos reflejantes:</label>
-              <input type="text" class="form-control" id="ubicacion" name="ubicacion" placeholder="" required>
+              <input type="text" class="form-control" id="ubicacion" name="ubicacion" placeholder="Ej: " required>
               <div class="invalid-feedback">
                 Ingrese ubicación de la antena respecto a objetos reflejantes
               </div>

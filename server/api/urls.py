@@ -1,7 +1,5 @@
-
-
 from django.urls import path
-from .views import main, register, loginUsr, home, estacionTerrena, logoutUser
+from .views import main, register, loginUsr, home, estacionTerrena, logoutUser, csvhandler
 
 
 urlpatterns = [
@@ -13,4 +11,5 @@ urlpatterns = [
     path('home/', home, name="home"),
     path('estacionterrena/', estacionTerrena, name="estacionTerrena"),
     path('logout/', logoutUser, name="logout"),
+    path('csvprueba/', csvhandler, name="csvhandler"),
 ]
