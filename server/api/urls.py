@@ -11,4 +11,5 @@ urlpatterns = [
     path('home/', home, name="home"),
     path('estacionterrena/', estacionTerrena, name="estacionTerrena"),
     path('logout/', logoutUser, name="logout"),
+    path('csvprueba/', csvhandler, name="csvhandler"),
 ]

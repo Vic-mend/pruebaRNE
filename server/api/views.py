@@ -5,9 +5,11 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth import get_user_model
+import pandas as pd
+import csv
 
 from django.contrib.auth.decorators import login_required
-from .decorators import unauthenticated_user
+from .decorators import unauthenticated_user, allowed_users
 
 from .helpfunctions import concatpass
 
@@ -37,7 +39,8 @@ def loginUsr(request):
 
     return render(request, "index.html")
 
-
+@login_required(login_url='index')
+@allowed_users(allowed_roles = ['administrators'])
 def main(request):
     #return HttpResponse('Hello')
     rad = radioaficionados.objects.all()
@@ -86,6 +89,48 @@ def logoutUser(request):
     logout(request)
     return redirect("index")
 
+def csvhandler(request):
+    data = {}
+    if "GET" == request.method:
+        return render(request, "csvform.html")
+    # if not GET, then proceed
+    try:
+        csv_file = request.FILES["csv_file"]
+        fname = csv_file.name
+        if (not fname.endswith('.csv')) and (not fname.endswith('.TXT')) and (not fname.endswith('.CSV')) and (not fname.endswith('.txt')) :
+
+            messages.error(request,'File is not CSV or TXT type')
+            return HttpResponse('Not a csv or txt')
+        #if file is too large, return
+        """if csv_file.multiple_chunks():
+            messages.error(request,"Uploaded file is too big (%.2f MB)." % (csv_file.size/(1000*1000),))
+            return HttpResponse('Archivo muy grande')
+        """
+        file_data = csv_file.read().decode("utf-8")		
+
+        lines = file_data.split("\n")
+		#loop over the lines and save them in db. If error , store as string and then display
+        if csv_file.name.endswith('.csv') or csv_file.name.endswith('.CSV'):
+            for line in lines:						
+                fields = line.split(",")
+                #""data_dict = {}
+                """data_dict["name"] = fields[0]
+                data_dict["start_date_time"] = fields[1]
+                data_dict["end_date_time"] = fields[2]
+                data_dict["notes"] = fields[3]"""
+                print(fields)
+        elif csv_file.name.endswith('.txt') or csv_file.name.endswith('.TXT'):
+            for line in lines:						
+                fields = line.split("   ")
+                
+                print(fields)
+
+    except Exception as e:
+    	#logging.getLogger("error_logger").error("Unable to upload file. "+repr(e))
+        messages.error(request,"Unable to upload file. "+repr(e))
+    
+    return HttpResponse('Hecho')
+        
 
 """def register(request):
     if request.method == 'GET':
