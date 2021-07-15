@@ -1,6 +1,6 @@
 from django.shortcuts import redirect, render
 from django.http import HttpResponse
-from .models import radioaficionados 
+from .models import radioaficionados , estaciones_terrenas
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
@@ -99,5 +99,19 @@ def logoutUser(request):
         return redirect('index')"""
 
 
+def estaciones(request):
+    tus_estaciones = estaciones_terrenas.objects.all()
+    context= {'estaciones' : tus_estaciones }
+    if request.method == 'POST':
+        new_est = estaciones_terrenas()
+        new_rad = radioaficionados()
+        new_rad.nombre_estacion= request.POST['indicativoR']
+        new_rad.marca = request.POST['contrasenaR']
+        new_rad.modelo = request.POST['nombreR']
+        new_rad.antena = request.POST['apellidoPR']
+        new_rad.tipo_antena = request.POST['apellidoMR']
+        new_rad.ganancia = request.POST['municipioR']
+        new_rad.estado = request.POST['estadoR']
+        new_rad.save() #Checar como es que se 
 
-
+    return render(request,"estaciones.html",context)#checar

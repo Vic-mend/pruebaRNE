@@ -1,0 +1,17 @@
+<html> 
+
+    <body>
+        <h1>Esta es una plantilla</h1>
+        {% if estaciones %}
+            {% for estacion in estaciones %}
+                <p>{{estacion.marca}}</p>
+            {% endfor %}
+
+        {% else %}
+            <p>No hay elementos que mostrar</p>
+        {% endif %}
+    </body>
+    <script>
+        console.log("{{ estaciones }}");
+    </script>
+</html>

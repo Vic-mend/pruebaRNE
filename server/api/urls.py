@@ -1,7 +1,5 @@
-
-
 from django.urls import path
-from .views import main,register, loginUsr, home, logoutUser
+from .views import main,register,loginUsr,home,logoutUser,estaciones
 
 
 urlpatterns = [
@@ -12,4 +10,5 @@ urlpatterns = [
     path('radlist/', main, name="radlist"),
     path('home/', home, name="home"),
     path('logout/', logoutUser, name="logout"),
+    path('station/', estaciones , name = "estaciones")
 ]
