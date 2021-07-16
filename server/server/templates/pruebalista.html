@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list" href="nueva" role="tab" >
+        NUeva Esatcion <i class="icon-cog" style="margin-left: 20px;"></i>
+        <!-- /{{estacion.id}} -->
+      </a>
+    {% for estacion in estaciones %}
+                <a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list" href="{{estacion.nombre_estacion}}" role="tab" >
+                  {{estacion.nombre_estacion}}<i class="icon-cog" style="margin-left: 20px;"></i>
+                  <!-- /{{estacion.id}} -->
+                </a>
+    {% endfor %}
+
+    {% if indestacion %}
+                
+    <label> Nombre </label><span> {{indestacion.0.nombre_estacion}}</span>
+    <label> Marca </label><span> {{indestacion.0.marca}}</span>
+    <label> Antena </label><span> {{indestacion.0.antena}}</span>
+    
+    {% else %}
+                <label> NO hay algo </label> 
+    {% endif %}
+
+    <script>
+        const btn = document.getElementById("btn");
+
+        btn.addEventListener("click", ()=>{
+
+            if(btn.value === "Red"){
+                btn.value = "Blue";
+            }else{
+                btn.value= "Red";
+            }
+        })
+    </script>
+</body>
+</html>

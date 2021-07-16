@@ -152,7 +152,11 @@ def estacionTerrena(request):
     usr = radioaficionados(request.user)
     tus_estaciones = estaciones_terrenas.objects.filter(indicativo=usr)
     context= {'estaciones' : tus_estaciones}
-    if request.method == 'POST':
+    indestacion = None
+    if request.method == 'GET':
+        tus_estaciones = estaciones_terrenas.objects.filter(indicativo=usr)
+        context= {'estaciones' : tus_estaciones, 'indestacion':indestacion}
+    elif request.method == 'POST':
         new_est = estaciones_terrenas()
         new_est.nombre_estacion= request.POST['nombre']
         new_est.marca = request.POST['marca']
@@ -167,5 +171,48 @@ def estacionTerrena(request):
         new_est.indicativo = usr # Lo del radioexperimentador
         #falta modulacion
         new_est.save() #Checar como es que se 
+        tus_estaciones = estaciones_terrenas.objects.filter(indicativo=usr)
+        context= {'estaciones' : tus_estaciones, 'indestacion':indestacion}
+    return render(request,"estacionTerrena.html",context)
+    #checar
 
-    return render(request,"estacionTerrena.html",context)#checar
+def estacionTerrena2(request,indestacion):
+    usr = radioaficionados(request.user)
+    tus_estaciones = estaciones_terrenas.objects.filter(indicativo=usr)
+    ind_est = estaciones_terrenas.objects.filter(indicativo=usr, nombre_estacion = indestacion)
+
+    #context= {'estaciones' : tus_estaciones}
+    if tus_estaciones and not ind_est == None:
+        
+        context= {'estaciones' : tus_estaciones, 'indestacion':ind_est}
+    else:
+        context= {'estaciones' : tus_estaciones, 'indestacion':None}
+    
+    if(indestacion == 'nueva'):
+        return render(request,"estacionTerrena.html",context)
+    else:
+        return render(request,"estacionTerrena.html",context)
+
+
+def pruebaestaciones(request,indestacion):
+    #print(indestacion)
+    usr = radioaficionados(request.user)
+    tus_estaciones = estaciones_terrenas.objects.filter(indicativo=usr)
+    ind_est = estaciones_terrenas.objects.filter(indicativo=usr, nombre_estacion = indestacion)
+    
+    if tus_estaciones and not ind_est == None :
+        
+        context= {'estaciones' : tus_estaciones, 'indestacion':ind_est}
+    else:
+        context= {'estaciones' : tus_estaciones, 'indestacion':None}
+
+    return render(request,"pruebalista.html",context)#checar
+
+def pruebaestaciones2(request):
+    usr = radioaficionados(request.user)
+    indestacion = None
+    
+    tus_estaciones = estaciones_terrenas.objects.filter(indicativo=usr)
+    context= {'estaciones' : tus_estaciones, 'indestacion':indestacion}
+
+    return render(request,"pruebalista.html",context)#checar
