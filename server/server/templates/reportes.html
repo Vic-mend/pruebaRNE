@@ -16,10 +16,16 @@
       <div class="mb-0">
         <label for="estacion" class="col-form-label">Estación Terrena:</label>
         <select class="form-select mb-2 ml-2" id="estacion" name="estacion" required>
-          <option selected value=""></option>                    
-          <option value="Estacion 1">Estación 1</option>                    
-          <option value="Estacion 2">Estación 2</option>                    
-          <option value="Estacion 3">Estación 3</option>                    
+          <option selected value=""></option> 
+          {%if estaciones%}
+            {% for estacion in estaciones %}
+            <option value="{{estacion.id}}">{{estacion.nombre_estacion}}</option> 
+            {% endfor %}
+          {% else %}
+          <!-- agregar un pop up -->
+            <option value="Estacion 1">Sin estaciones</option>
+          {%endif%}
+                             
         </select>
         <div class="invalid-feedback">
           Escoja una de sus estaciones terrenas
