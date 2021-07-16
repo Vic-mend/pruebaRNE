@@ -172,13 +172,11 @@ def estacionTerrena(request):
         new_est.polarizacion = request.POST['polarizacion']
         new_est.altura = request.POST['altura']
         new_est.modulacion = request.POST['formato']
-        new_est.indicativo = usr # Lo del radioexperimentador
-        #falta modulacion
-        new_est.save() #Checar como es que se 
+        new_est.indicativo = usr
+        new_est.save()
         tus_estaciones = estaciones_terrenas.objects.filter(indicativo=usr)
         context= {'estaciones' : tus_estaciones, 'indestacion':indestacion}
     return render(request,"estacionTerrena.html",context)
-    #checar
 
 def estacionTerrena2(request,indestacion):
     usr = radioaficionados(request.user)
@@ -226,4 +224,3 @@ def reportes(request):
     tus_estaciones = estaciones_terrenas.objects.filter(indicativo=usr)
     context= {'estaciones' : tus_estaciones}
     return render(request, "reportes.html",context)
-
