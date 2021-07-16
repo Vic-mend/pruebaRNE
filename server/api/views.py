@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth import get_user_model
-import pandas as pd
+# import pandas as pd
 import csv
 
 from django.contrib.auth.decorators import login_required
@@ -83,6 +83,10 @@ def home(request):
 @login_required(login_url='index')
 def estacionTerrena(request):
     return render(request, "estacionTerrena.html")
+
+@login_required(login_url='index')
+def reportes(request):
+    return render(request, "reportes.html")
 
 @login_required(login_url='index')
 def logoutUser(request):

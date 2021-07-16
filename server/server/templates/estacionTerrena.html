@@ -33,7 +33,7 @@
 
     <div class="col-md-7 col-sm-12 mt-2 ml-5 border rounded" style="border-width: 2px!important; max-height: 650px;  overflow: auto; max-width: 100%;">
       <div class="p-2">
-        <form id="" action="" method="POST" novalidate>
+        <form id="estacion" action="" method="POST" novalidate>
             {% csrf_token %}
             <div class="mb-0">
               <label for="nombre" class="col-form-label">Nombre de la Estación:</label>
@@ -81,14 +81,6 @@
               <label for="ganancia" class="col-form-label">Ganancia [dBi]: (opcional)</label>
               <input type="text" class="form-control" id="ganancia" name="ganancia" placeholder="Ej: 20">
             </div>
-            <!-- frecuencias no va o si? -->
-            <!-- <div class="mb-0">
-              <label for="frecuencia" class="col-form-label">Intervalo de frecuencias de operación [MHz]:</label>
-              <input type="text" class="form-control" id="frecuencia" name="frecuencia" placeholder="Ej: 145" required>
-              <div class="invalid-feedback">
-                Ingrese un intervalo de frecuencias de operación
-              </div>
-            </div> -->
             <div class="mb-0">
               <label for="polarizacion" class="col-form-label">Polarización:</label>
               <input type="text" class="form-control" id="polarizacion" name="polarizacion" placeholder="Ej: Circular" required>
@@ -98,7 +90,7 @@
             </div>
             <div class="mb-0">
               <label for="altura" class="col-form-label">Altura sobre el piso [m]:</label>
-              <input type="text" class="form-control" id="altura" name="altura" placeholder="Ej: 10">
+              <input type="text" class="form-control" id="altura" name="altura" placeholder="Ej: 10" required>
               <div class="invalid-feedback">
                 Ingrese una altura sobre el piso dado en metros
               </div>
@@ -129,7 +121,7 @@
             </div>
 
             <div class="mt-3">
-              <button type="submit" class="btn btn-color text-white" onclick="">Actualizar / Agregar</button>
+              <button type="submit" class="btn btn-color text-white" onclick="handleSubir()">Actualizar / Agregar</button>
             </div>
         </form>
       </div>
@@ -142,5 +134,30 @@
       if(e.target.value=="Otro")    $('div[id="div-otro"]').show();
       else    $('div[id="div-otro"]').hide();
     });
+
+    function handleSubir(){
+      var nombre = document.getElementById("nombre").value;
+      var marca = document.getElementById("marca").value;
+      var modelo = document.getElementById("modelo").value;
+      var grid = document.getElementById("grid").value;
+      var antena = document.getElementById("antena").value;
+      var tipo = document.getElementById("tipo").value;
+      var ganancia = document.getElementById("ganancia").value;
+      var polarizacion = document.getElementById("polarizacion").value;
+      var altura = document.getElementById("altura").value;
+      var formato = document.getElementById("formato").value;
+      var formatoOtro = document.getElementById("formato-otro").value;
+      
+      const dataEstacion ={ nombre, marca, modelo, grid, antena, tipo, ganancia, polarizacion, altura, formato, formatoOtro };
+      
+      if(nombre == "" || marca == " " || modelo == "" || grid == "" || antena == "" || polarizacion == "" || altura == ""){
+        var formLogin = document.querySelectorAll('#estacion');
+        formLogin[0].classList.remove('was-validated');
+        formLogin[0].classList.add('was-validated');
+      }
+      else{
+        console.log("Subir Estación: ",dataEstacion);
+      }
+    }
   </script> 
 {% endblock %}

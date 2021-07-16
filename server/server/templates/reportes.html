@@ -1,0 +1,183 @@
+{% extends "template.html" %}
+
+{% block content %}
+  <div class="container p-3 mt-3 border rounded" style="border-width: 2px!important;">
+    <form id="reporte" action="" method="POST" novalidate  style="display: flex; flex-wrap: wrap; justify-content: space-evenly;">
+      {% csrf_token %}
+      <div class="input-group" style="max-width: 60%;">
+        <div class="custom-file">
+          <input type="file" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01" value="">
+          <label class="custom-file-label" for="inputGroupFile01">Seleccione un reporte</label>
+        </div>
+        <div class="invalid-feedback file">
+          Escoja un reporte
+        </div>
+      </div>
+      <div class="mb-0">
+        <label for="estacion" class="col-form-label">Estación Terrena:</label>
+        <select class="form-select mb-2 ml-2" id="estacion" name="estacion" required>
+          <option selected value=""></option>                    
+          <option value="Estacion 1">Estación 1</option>                    
+          <option value="Estacion 2">Estación 2</option>                    
+          <option value="Estacion 3">Estación 3</option>                    
+        </select>
+        <div class="invalid-feedback">
+          Escoja una de sus estaciones terrenas
+        </div>
+      </div>
+      <div class="mb-0">
+        <button class="btn btn-outline-success" type="button" onclick="handleSubir()">Subir</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="container p-3 mt-3 border rounded" style="border-width: 2px!important;">
+    <div class="mt-2" style="position: relative; height: 55vh; overflow: auto; display: block;">
+      <table class="table table-bordered table-striped mb-0">
+        <thead>
+          <tr>
+            <th scope="col">Fecha</th>
+            <th scope="col">Hora</th>
+            <th scope="col">Enlace</th>
+            <th scope="col">Estación Receptora</th>
+            <th scope="col">Grid</th>
+            <th scope="col">Frecuencia</th>
+            <th scope="col">Modulación</th>
+            <th scope="col">Reporte 1</th>
+            <th scope="col">Reporte 2</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">13/07/2021</th>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <th scope="row">14/07/2021</th>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <th scope="row">15/07/2021</th>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <th scope="row">16/07/2021</th>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <th scope="row">17/07/2021</th>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <th scope="row">18/07/2021</th>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <th scope="row">19/07/2021</th>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <th scope="row">20/07/2021</th>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <th scope="row">21/07/2021</th>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    $('#inputGroupFile01').on('change',function(){
+      var fileName = "Seleccione un reporte";
+      if($(this).val()){
+        fileName = $(this).val().replace('C:\\fakepath\\', "");
+        $('.file').css('display', 'none');
+      }
+      $(this).next('.custom-file-label').html(fileName);
+    })
+
+    function handleSubir(){
+      var estacion = document.getElementById("estacion").value;
+      var archivo = document.getElementById("inputGroupFile01").value.replace('C:\\fakepath\\', "");
+
+      const dataReporte ={ estacion, archivo };
+      
+      if(estacion == "" || archivo == " " || archivo == ""){
+        var formLogin = document.querySelectorAll('#reporte');
+        formLogin[0].classList.remove('was-validated');
+        formLogin[0].classList.add('was-validated');
+        if(archivo == " " || archivo == "")  $('.file').css('display', 'block');
+      }
+      else{
+        $('.file').css('display', 'none');
+        console.log("Subir: ",dataReporte);
+      }
+    }
+  </script>
+{% endblock %}
