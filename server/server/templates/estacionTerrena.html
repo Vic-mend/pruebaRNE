@@ -1,7 +1,5 @@
 {% extends "template.html" %}
 
-{% block style %} {%load static%} <link rel="stylesheet" href="{% static 'styles/styles.css' %}">  {% endblock %}
-
 {% block content %}
   <div class="row" style="margin-left: 15px; margin-right: 0px;">
     <div class="col-md-4 col-sm-12 mt-2 border rounded p-5" style="border-width: 2px!important;  padding-top: 30px!important; max-height: 650px; overflow: auto;">
@@ -12,7 +10,7 @@
         <!-- https://getbootstrap.com/docs/4.0/components/list-group/ -->
         <label class="col-form-label">Para agregar o editar una estación selecciona una opción:</label>
         <div class="list-group align-middle mt-3" id="list-tab" role="tablist">
-          <a class="list-group-item list-group-item-action active" id="list-home-list" data-toggle="list" href="#list-agregar" role="tab">
+          <a class="list-group-item list-group-item-action active" id="list-agregar" data-toggle="list" href="#list-agregar" role="tab">
             Agregar una Estación<i class="icon-plus" style="margin-left: 20px;"></i>
           </a>
 
@@ -35,7 +33,7 @@
 
     <div class="col-md-7 col-sm-12 mt-2 ml-5 border rounded" style="border-width: 2px!important; max-height: 650px;  overflow: auto; max-width: 100%;">
       <div class="p-2">
-        <form id="estacion" action="" method="POST" novalidate>
+        <form id="estacion" action="" method="POST" novalidatey>
             {% csrf_token %}
             <div class="mb-0">
               <label for="nombre" class="col-form-label">Nombre de la Estación:</label>
@@ -123,7 +121,7 @@
             </div>
 
             <div class="mt-3">
-              <button type="submit" class="btn btn-color text-white" onclick="handleSubir()">Actualizar / Agregar</button>
+              <button type="submit" id="bt" class="btn btn-color text-white" onclick="handleSubir()">Agregar</button>
             </div>
         </form>
       </div>
@@ -135,6 +133,11 @@
       $('input[id=formato-otro]').val("");
       if(e.target.value=="Otro")    $('div[id="div-otro"]').show();
       else    $('div[id="div-otro"]').hide();
+    });
+
+    $('#list-tab').on('click', function(e) {
+      if(e.target.id == "list-agregar") $("#bt").text("Agregar");
+      else $("#bt").text("Actualizar");
     });
 
     function handleSubir(){
