@@ -1,50 +1,8 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inicio</title>
+{% extends "template.html" %}
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link rel="stylesheet" href="{% static 'styles/styles.css' %}">
+{% block style %} {%load static%} <link rel="stylesheet" href="{% static 'styles/styles.css' %}">  {% endblock %}
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <!-- https://fontawesome.com/v3.2/icons/ -->
-    <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
-</head>
-<body>
-
-  <nav class="navbar navbar-expand-lg navbar-light justify-content-center" style="background: #134E5E; background: -webkit-linear-gradient(to right, #71B280, #134E5E); background: linear-gradient(to right, #71B280, #134E5E);">    
-    <a class="navbar-brand text-white mr-0" href="/">¡Bienvenido {{request.user}}!</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-      <div class="mx-auto">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item active mr-3 ml-3">
-            <a class="nav-link text-white" href="{% url 'home' %}">Home<span class="sr-only"></span></a>
-          </li>
-          <li class="nav-item  active mr-3 ml-3">
-            <a class="nav-link text-white" href="{% url 'estacionTerrena' %}">Estación Terrena</a>
-          </li>
-          <li class="nav-item  active mr-3 ml-3">
-            <a class="nav-link text-white" href="{% url 'estacionTerrena' %}">Reportes</a>
-          </li>
-        </ul>
-      </div>
-      
-      <form class="d-flex mr-3 ml-5" method="GET" action="{% url 'logout' %}">
-        <button class="btn btn-secondary" type="submit"> Salir</button>
-      </form>
-    </div>
-  </nav>
-
-
+{% block content %}
   <div class="row" style="margin-left: 15px; margin-right: 0px;">
     <div class="col-md-4 col-sm-12 mt-2 border rounded p-5" style="border-width: 2px!important;  padding-top: 30px!important; max-height: 650px; overflow: auto;">
       <div>
@@ -53,7 +11,7 @@
       <div class="mt-3">
         <!-- https://getbootstrap.com/docs/4.0/components/list-group/ -->
         <label class="col-form-label">Para agregar o editar una estación selecciona una opción:</label>
-        <div class="list-group align-middle mt-3" id="list-tab" role="tablist"> <!-- style="max-width: 80%; margin-left: auto; margin-right: auto;" -->
+        <div class="list-group align-middle mt-3" id="list-tab" role="tablist">
           <a class="list-group-item list-group-item-action active" id="list-home-list" data-toggle="list" href="#list-agregar" role="tab">
             Agregar una Estación<i class="icon-plus" style="margin-left: 20px;"></i>
           </a>
@@ -180,26 +138,6 @@
     </div>
   </div>
 
-
-  <footer class="bg-light text-center text-lg-start mt-5">
-    <div class="row text-center mr-0 ml-0 p-2" style="display:flex; background-color: rgba(0, 0, 0, 0.2);">
-      <div class="col-md-5 pr-0 pl-0">
-        <a class="ml-5 mr-5" href="https://www.ipn.mx/"><img class="img-fluid" src="{% static 'resources/ipnC.png' %}"  style="width: 6%;"></a>
-        <a class="ml-5 mr-5" href="https://www.unam.mx/"><img class="img-fluid" src="{% static 'resources/unam.png' %}" style="width: 8%;"></a>
-        <a class="ml-5 mr-5" href="https://www.ucm.es/"><img class="img-fluid" src="{% static 'resources/complutense.png' %}" style="width: 8%;"></a>
-      </div>
-      <div class="col-md-2 pr-0 pl-0 align-middle mt-2 mb-2" style="display: flex; align-items: center;">
-        <p class="mx-auto mb-0">© 2021 Copyright: Odyssey Corp.</p>
-      </div>
-      <div class="col-md-5 pr-0 pl-0">
-        <a class="ml-5 mr-5" href="https://fmre.mx/"><img class="mx-auto" src="{% static 'resources/FMRE.png' %}" style="width: 6%;"></a>
-        <a class="ml-5 mr-5" href="https://www.upiita.ipn.mx/"><img class="mx-auto" src="{% static 'resources/upiita.png' %}" style="width: 11%; margin-top: 10px;"></a>
-        <a class="ml-5 mr-5" href="https://www.cinvestav.mx/"><img class="mx-auto" src="{% static 'resources/cinvestav.png' %}" style="width: 10%;"></a>
-      </div>
-    </div>
-  </footer>
-
-
   <script type="text/javascript">
     $('#formato').on('change', function(e) {
       $('input[id=formato-otro]').val("");
@@ -207,6 +145,4 @@
       else    $('div[id="div-otro"]').hide();
     });
   </script> 
-</body>
-</html>
-
+{% endblock %}

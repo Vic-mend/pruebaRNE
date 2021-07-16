@@ -1,93 +1,38 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inicio</title>
+{% extends "template.html" %}
+{% block style %} 
+{%load static%} 
+<link rel="stylesheet" href="{% static 'styles/homeStyles.css' %}">  
+{% endblock %}
 
-      
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link rel="stylesheet" href="{% static 'styles/homeStyles.css' %}">
-
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-
-</head>
-<body>
-  <nav class="navbar navbar-expand-lg navbar-light justify-content-center" style="background: #134E5E; background: -webkit-linear-gradient(to right, #71B280, #134E5E); background: linear-gradient(to right, #71B280, #134E5E);">    
-    <a class="navbar-brand text-white mr-0" href="/">¡Bienvenido {{request.user}}!</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-      <div class="mx-auto">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item active mr-3 ml-3">
-            <a class="nav-link text-white" href="{% url 'home' %}">Home<span class="sr-only"></span></a>
-          </li>
-          <li class="nav-item  active mr-3 ml-3">
-            <a class="nav-link text-white" href="{% url 'estacionTerrena' %}">Estación Terrena</a>
-          </li>
-          <li class="nav-item  active mr-3 ml-3">
-            <a class="nav-link text-white" href="{% url 'estacionTerrena' %}">Reportes</a>
-          </li>
-        </ul>
-      </div>
-      
-      <form class="d-flex mr-3 ml-5" method="GET" action="{% url 'logout' %}">
-        <button class="btn btn-secondary" type="submit"> Salir</button>
-      </form>
-    </div>
-  </nav>
-
-    <div class="alert alert-primary alrt" role="alert">
-        <MARQUEE WIDTH=100% > Próximo experimento dentro de 24 hrs. </MARQUEE>
-    </div>
+{% block content %}
+{% load static%}
+  <div class="alert alert-primary alrt" role="alert">
+    <MARQUEE WIDTH=100% > Próximo experimento dentro de 24 hrs. </MARQUEE>
+  </div>
   
-    <div class="image">
-      <img class="image__img" src="{% static 'resources/antenaHome.jpg' %}" alt="Bricks">
-      <div class="centered"><p class="h4">Estaciones Terrenas</p></div>
-      <div class="image__overlay image__overlay--primary">
-          <div class="image__title"><a class="linkim" href="{% url 'estacionTerrena' %}">Estaciones Terrenas</a></div>
-          <a class="linkim" href="{% url 'estacionTerrena' %}">
-          <p class="image__description">
-              Visualice sus estaciones terrenas
-          </p>
-          </a>
-      </div>
-    </div>
-    <div class="image">
-      <img class="image__img" src="{% static 'resources/registro.png' %}" alt="Bricks">
-      <div class="centered"><p class="h4">Registros</p></div>
-      <div class="image__overlay image__overlay--primary">
-        <div class="image__title"><a class="linkim" href="{% url 'estacionTerrena' %}">Registro</a></div>
+  <div class="image">
+    <img class="image__img" src="{% static 'resources/antenaHome.jpg' %}" alt="Bricks">
+    <div class="centered"><p class="h4">Estaciones Terrenas</p></div>
+    <div class="image__overlay image__overlay--primary">
+        <div class="image__title"><a class="linkim" href="{% url 'estacionTerrena' %}">Estaciones Terrenas</a></div>
         <a class="linkim" href="{% url 'estacionTerrena' %}">
         <p class="image__description">
-            Ingrese nuevo registro
+            Visualice sus estaciones terrenas
         </p>
         </a>
-      </div>
     </div>
+  </div>
+  <div class="image">
+    <img class="image__img" src="{% static 'resources/registro.png' %}" alt="Bricks">
+    <div class="centered"><p class="h4">Registros</p></div>
+    <div class="image__overlay image__overlay--primary">
+      <div class="image__title"><a class="linkim" href="{% url 'estacionTerrena' %}">Registro</a></div>
+      <a class="linkim" href="{% url 'estacionTerrena' %}">
+      <p class="image__description">
+          Ingrese nuevo registro
+      </p>
+      </a>
+    </div>
+  </div>
 
-  <footer class="bg-light text-center text-lg-start" style="margin-top: 45px;">
-    <div class="row text-center mr-0 ml-0 p-2" style="display:flex; background-color: rgba(0, 0, 0, 0.2);">
-      <div class="col-md-5 pr-0 pl-0">
-        <a class="ml-5 mr-5" href="https://www.ipn.mx/"><img class="img-fluid" src="{% static 'resources/ipnC.png' %}"  style="width: 6%;"></a>
-        <a class="ml-5 mr-5" href="https://www.unam.mx/"><img class="img-fluid" src="{% static 'resources/unam.png' %}" style="width: 8%;"></a>
-        <a class="ml-5 mr-5" href="https://www.ucm.es/"><img class="img-fluid" src="{% static 'resources/complutense.png' %}" style="width: 8%;"></a>
-      </div>
-      <div class="col-md-2 pr-0 pl-0 align-middle mt-2 mb-2" style="display: flex; align-items: center;">
-        <p class="mx-auto mb-0">© 2021 Copyright: Odyssey Corp.</p>
-      </div>
-      <div class="col-md-5 pr-0 pl-0">
-        <a class="ml-5 mr-5" href="https://fmre.mx/"><img class="mx-auto" src="{% static 'resources/FMRE.png' %}" style="width: 6%;"></a>
-        <a class="ml-5 mr-5" href="https://www.upiita.ipn.mx/"><img class="mx-auto" src="{% static 'resources/upiita.png' %}" style="width: 11%; margin-top: 10px;"></a>
-        <a class="ml-5 mr-5" href="https://www.cinvestav.mx/"><img class="mx-auto" src="{% static 'resources/cinvestav.png' %}" style="width: 10%;"></a>
-      </div>
-    </div>
-  </footer>
-</body>
-</html>
+{% endblock %}
