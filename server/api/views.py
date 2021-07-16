@@ -220,3 +220,10 @@ def pruebaestaciones2(request):
     context= {'estaciones' : tus_estaciones, 'indestacion':indestacion}
 
     return render(request,"pruebalista.html",context)#checar
+
+def reportes(request):
+    usr = radioaficionados(request.user)
+    tus_estaciones = estaciones_terrenas.objects.filter(indicativo=usr)
+    context= {'estaciones' : tus_estaciones}
+    return render(request, "reportes.html",context)
+
