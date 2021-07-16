@@ -1,162 +1,38 @@
 {% extends "template.html" %}
+{% block style %} 
+{%load static%} 
+<link rel="stylesheet" href="{% static 'styles/homeStyles.css' %}">  
+{% endblock %}
 
 {% block content %}
-  <div class="alert alert-primary" role="alert">
+{% load static%}
+  <div class="alert alert-primary alrt" role="alert">
     <MARQUEE WIDTH=100% > Próximo experimento dentro de 24 hrs. </MARQUEE>
   </div>
   
-  <div class="row" style="margin-left: 15px; margin-right: 0px;">
-    <div class="col-md-4 col-sm-12 mt-2 border rounded p-5" style="border-width: 2px!important;">
-      <div >
-          <h5>Detalles de su Estación Terrena</h5>
-      </div>
-      <div>
-        <form id="" action="" method="POST" novalidate>
-          <!-- {% csrf_token %} -->
-          <div class="mb-0">
-            <label for="marca" class="col-form-label">Marca de Radio:</label>
-            <input type="text" class="form-control" id="marca" name="marca" placeholder="Yaesu" required>
-            <div class="invalid-feedback">
-              Ingrese una marca de radio
-            </div>
-          </div>
-          <div class="mb-0">
-            <label for="modelo" class="col-form-label">Modelo de Radio:</label>
-            <input type="text" class="form-control" id="modelo" name="modelo" placeholder="FT-123X"required>
-            <div class="invalid-feedback">
-              Ingrese un modelo modelo de radio
-            </div>
-          </div>
-          <div class="mb-0">
-            <label for="tipo" class="col-form-label">Tipo de Antena:</label>
-            <input type="text" class="form-control" id="tipo" name="tipo" placeholder="Yagi" required>
-            <div class="invalid-feedback">
-              Ingrese tipo de antena
-            </div>
-          </div>
-          <div class="mb-0">
-            <label for="grid" class="col-form-label">Grid Locator:</label>
-            <input type="text" class="form-control" id="grid" name="grid" placeholder="DK9HX3" required>
-            <div class="invalid-feedback">
-              Ingrese un Grid Locator
-            </div>
-          </div>
-
-          <div class="mt-3">
-            <button type="submit" class="btn btn-color text-white" onclick="">Actualizar / Agregar</button>
-          </div>
-        </form>
-      </div>
-    </div>
-
-    <div class="col-md-7 col-sm-12 mt-2 ml-5 border rounded" style="border-width: 2px!important;">
-      <div class="input-group mt-2">
-        <div class="custom-file">
-          <input type="file" class="custom-file-input" id="inputGroupFile04">
-          <label class="custom-file-label" for="inputGroupFile04">Seleccione un reporte</label>
-        </div>
-        <div class="input-group-append">
-          <button class="btn btn-outline-secondary" type="button">Subir</button>
-        </div>
-      </div>
-      <div class="mt-2" style="position: relative; height: 55vh; overflow: auto; display: block;">
-        <table class="table table-bordered table-striped mb-0">
-          <thead>
-            <tr>
-              <th scope="col">Fecha</th>
-              <th scope="col">Hora</th>
-              <th scope="col">Enlace</th>
-              <th scope="col">Estación Receptora</th>
-              <th scope="col">Grid</th>
-              <th scope="col">Frecuencia</th>
-              <th scope="col">Modulación</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <th scope="row">13/07/2021</th>
-              <td>-</td>
-              <td>-</td>
-              <td>-</td>
-              <td>-</td>
-              <td>-</td>
-              <td>-</td>
-            </tr>
-            <tr>
-              <th scope="row">14/07/2021</th>
-              <td>-</td>
-              <td>-</td>
-              <td>-</td>
-              <td>-</td>
-              <td>-</td>
-              <td>-</td>
-            </tr>
-            <tr>
-              <th scope="row">15/07/2021</th>
-              <td>-</td>
-              <td>-</td>
-              <td>-</td>
-              <td>-</td>
-              <td>-</td>
-              <td>-</td>
-            </tr>
-            <tr>
-              <th scope="row">16/07/2021</th>
-              <td>-</td>
-              <td>-</td>
-              <td>-</td>
-              <td>-</td>
-              <td>-</td>
-              <td>-</td>
-            </tr>
-            <tr>
-              <th scope="row">17/07/2021</th>
-              <td>-</td>
-              <td>-</td>
-              <td>-</td>
-              <td>-</td>
-              <td>-</td>
-              <td>-</td>
-            </tr>
-            <tr>
-              <th scope="row">18/07/2021</th>
-              <td>-</td>
-              <td>-</td>
-              <td>-</td>
-              <td>-</td>
-              <td>-</td>
-              <td>-</td>
-            </tr>
-            <tr>
-              <th scope="row">19/07/2021</th>
-              <td>-</td>
-              <td>-</td>
-              <td>-</td>
-              <td>-</td>
-              <td>-</td>
-              <td>-</td>
-            </tr>
-            <tr>
-              <th scope="row">20/07/2021</th>
-              <td>-</td>
-              <td>-</td>
-              <td>-</td>
-              <td>-</td>
-              <td>-</td>
-              <td>-</td>
-            </tr>
-            <tr>
-              <th scope="row">21/07/2021</th>
-              <td>-</td>
-              <td>-</td>
-              <td>-</td>
-              <td>-</td>
-              <td>-</td>
-              <td>-</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+  <div class="image">
+    <img class="image__img" src="{% static 'resources/antenaHome.jpg' %}" alt="Bricks">
+    <div class="centered"><p class="h4">Estaciones Terrenas</p></div>
+    <div class="image__overlay image__overlay--primary">
+        <div class="image__title"><a class="linkim" href="{% url 'estacionTerrena' %}">Estaciones Terrenas</a></div>
+        <a class="linkim" href="{% url 'estacionTerrena' %}">
+        <p class="image__description">
+            Visualice sus estaciones terrenas
+        </p>
+        </a>
     </div>
   </div>
+  <div class="image">
+    <img class="image__img" src="{% static 'resources/registro.png' %}" alt="Bricks">
+    <div class="centered"><p class="h4">Registros</p></div>
+    <div class="image__overlay image__overlay--primary">
+      <div class="image__title"><a class="linkim" href="{% url 'estacionTerrena' %}">Registro</a></div>
+      <a class="linkim" href="{% url 'estacionTerrena' %}">
+      <p class="image__description">
+          Ingrese nuevo registro
+      </p>
+      </a>
+    </div>
+  </div>
+
 {% endblock %}
