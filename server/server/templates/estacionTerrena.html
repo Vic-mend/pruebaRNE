@@ -9,14 +9,17 @@
       <div class="mt-3">
         <!-- https://getbootstrap.com/docs/4.0/components/list-group/ -->
         <label class="col-form-label">Para agregar o editar una estación selecciona una opción:</label>
-        <div class="list-group align-middle mt-3" id="list-tab" role="tablist">
-          <a class="list-group-item list-group-item-action active" id="list-agregar" data-toggle="list" href="#list-agregar" role="tab">
-            Agregar una Estación<i class="icon-plus" style="margin-left: 20px;"></i>
+        <br>
+        
+        <div class="list-group align-middle mt-3" id="list-tab" role="tablist"> <!-- style="max-width: 80%; margin-left: auto; margin-right: auto;" -->
+          <a class="list-group-item list-group-item-action" id="list-profile-list"  href="nueva" role="tab" >
+            NUeva Esatcion <i class="icon-cog" style="margin-left: 20px;"></i>
+            <!-- /{{estacion.id}} -->
           </a>
 
           {% if estaciones %}
             {% for estacion in estaciones %}
-                <a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list" href="" role="tab">
+                <a class="list-group-item list-group-item-action" id="list-profile-list"  href="{{estacion.nombre_estacion}}" role="tab">
                   {{estacion.nombre_estacion}}<i class="icon-cog" style="margin-left: 20px;"></i>
                   <!-- /{{estacion.id}} -->
                 </a>
@@ -33,7 +36,8 @@
 
     <div class="col-md-7 col-sm-12 mt-2 ml-5 border rounded" style="border-width: 2px!important; max-height: 650px;  overflow: auto; max-width: 100%;">
       <div class="p-2">
-        <form id="estacion" action="" method="POST" novalidatey>
+        {% if not indestacion  %}
+        <form id="" action="" method="POST" novalidate>
             {% csrf_token %}
             <div class="mb-0">
               <label for="nombre" class="col-form-label">Nombre de la Estación:</label>
@@ -124,17 +128,169 @@
               <button type="submit" id="bt" class="btn btn-color text-white" onclick="handleSubir()">Agregar</button>
             </div>
         </form>
+        {% elif indestacion %}
+        
+        <label> Nombre </label><span>{{indestacion.0.nombre_estacion}}</span>
+        <form id="" action="" method="POST" novalidate>
+          {% csrf_token %}
+          <div class="mb-0">
+            <label for="nombre" class="col-form-label">Nombre de la Estación:</label>
+            <input type="text" class="form-control" id="nombre" name="nombre" value={{indestacion.0.nombre_estacion}} required>
+            <div class="invalid-feedback">
+              Ingrese un nombre para su estación
+            </div>
+          </div>
+          <div class="mb-0">
+            <label for="marca" class="col-form-label">Marca del Equipo:</label>
+            <input type="text" class="form-control" id="marca" name="marca" value={{indestacion.0.marca}} required>
+            <div class="invalid-feedback">
+              Ingrese una marca del equipo
+            </div>
+          </div>
+          <div class="mb-0">
+              <label for="modelo" class="col-form-label">Modelo del Equipo:</label>
+              <input type="text" class="form-control" id="modelo" name="modelo" value={{indestacion.0.modelo}} required>
+              <div class="invalid-feedback">
+                Ingrese un modelo del equipo
+              </div>
+          </div>            
+          <div class="mb-0">
+            <label for="grid" class="col-form-label">Grid Locator:</label>
+            <input type="text" class="form-control" id="grid" name="grid" value={{indestacion.0.grid}} required>
+            <div class="invalid-feedback">
+              Ingrese un Grid Locator
+            </div>
+          </div>
+          <div class="mb-0">
+              <label for="antena" class="col-form-label">Antena:</label>
+              <input type="text" class="form-control" id="antena" name="antena" value={{indestacion.0.antena}} required>
+              <div class="invalid-feedback">
+                Ingrese una antena
+              </div>
+          </div>
+          <div class="mb-0">
+            <label for="tipo" class="col-form-label">Tipo de Antena:</label>
+            <select class="form-select mb-2 ml-2" id="tipo" name="tipo" required>
+              {% if indestacion.0.tipo_antena == "Omnidireccional" %} 
+              <option selected value="Omnidireccional">Omnidireccional</option>                    
+              <option  value="Direccional">Direccional</option> 
+              {% elif  indestacion.0.tipo_antena == "Direccional" %}
+              <option  value="Omnidireccional">Omnidireccional</option>                    
+              <option selected value="Direccional">Direccional</option> 
+              {% endif %}
+              
+            </select>
+          </div>
+          <div class="mb-0">
+            <label for="ganancia" class="col-form-label">Ganancia [dBi]: (opcional)</label>
+            <input type="text" class="form-control" id="ganancia" name="ganancia" value={{indestacion.0.ganancia}}>
+          </div>
+          <!-- frecuencias no va o si? -->
+          <!-- <div class="mb-0">
+            <label for="frecuencia" class="col-form-label">Intervalo de frecuencias de operación [MHz]:</label>
+            <input type="text" class="form-control" id="frecuencia" name="frecuencia" placeholder="Ej: 145" required>
+            <div class="invalid-feedback">
+              Ingrese un intervalo de frecuencias de operación
+            </div>
+          </div> -->
+          <div class="mb-0">
+            <label for="polarizacion" class="col-form-label">Polarización:</label>
+            <input type="text" class="form-control" id="polarizacion" name="polarizacion" value={{indestacion.0.polarizacion}} required>
+            <div class="invalid-feedback">
+              Ingrese una polarización
+            </div>
+          </div>
+          <div class="mb-0">
+            <label for="altura" class="col-form-label">Altura sobre el piso [m]:</label>
+            <input type="text" class="form-control" id="altura" name="altura" value={{indestacion.0.altura}}>
+            <div class="invalid-feedback">
+              Ingrese una altura sobre el piso dado en metros
+            </div>
+          </div>
+          <!-- <div class="mb-0">
+            <label for="ubicacion" class="col-form-label">Ubicación de la antena respecto a objetos reflejantes:</label>
+            <input type="text" class="form-control" id="ubicacion" name="ubicacion" placeholder="Ej: " required>
+            <div class="invalid-feedback">
+              Ingrese ubicación de la antena respecto a objetos reflejantes
+            </div>
+          </div> -->
+
+          <div class="mb-0">
+            <label for="formato" class="col-form-label">Formato de Modulación:</label>
+            <select class="form-select mb-2 ml-2" id="formato" name="formato" required>
+              {% if indestacion.0.modulacion == "FM" %}
+              <option selected value="FM">FM</option>                    
+              <option value="LSB">LSB</option>                    
+              <option value="USB">USB</option>                    
+              <option value="Otro">Otro</option>
+              {% elif indestacion.0.modulacion == "LSB" %}
+              <option  value="FM">FM</option>                    
+              <option selected value="LSB">LSB</option>                    
+              <option value="USB">USB</option>                    
+              <option value="Otro">Otro</option>
+              {% elif indestacion.0.modulacion == "USB" %}
+              <option  value="FM">FM</option>                    
+              <option  value="LSB">LSB</option>                    
+              <option selected value="USB">USB</option>                    
+              <option value="Otro">Otro</option>
+              {% elif indestacion.0.modulacion == "Otro" %}
+              <option  value="FM">FM</option>                    
+              <option  value="LSB">LSB</option>                    
+              <option value="USB">USB</option>                    
+              <option selected value="Otro">Otro</option>
+              {% endif %}
+              
+                                  
+            </select>
+          </div>
+          <div id="div-otro" class="mb-0" style="display: none;">
+            <label for="formato-otro" class="col-form-label">Especifique:</label>
+            <input type="text" class="form-control" id="formato-otro" name="formato-otro" placeholder="" required>
+            <div class="invalid-feedback">
+              Ingrese un formato de modulación
+            </div>
+          </div>
+
+          <div class="mt-3">
+            <button type="submit" class="btn btn-color text-white" onclick="">Actualizar / Agregar</button>
+          </div>
+      </form>
+        {% endif %}
       </div>
     </div>
   </div>
 
-  <script type="text/javascript">
+
+  <footer class="bg-light text-center text-lg-start mt-5">
+    <div class="row text-center mr-0 ml-0 p-2" style="display:flex; background-color: rgba(0, 0, 0, 0.2);">
+      <div class="col-md-5 pr-0 pl-0">
+        <a class="ml-5 mr-5" href="https://www.ipn.mx/"><img class="img-fluid" src="{% static 'resources/ipnC.png' %}"  style="width: 6%;"></a>
+        <a class="ml-5 mr-5" href="https://www.unam.mx/"><img class="img-fluid" src="{% static 'resources/unam.png' %}" style="width: 8%;"></a>
+        <a class="ml-5 mr-5" href="https://www.ucm.es/"><img class="img-fluid" src="{% static 'resources/complutense.png' %}" style="width: 8%;"></a>
+      </div>
+      <div class="col-md-2 pr-0 pl-0 align-middle mt-2 mb-2" style="display: flex; align-items: center;">
+        <p class="mx-auto mb-0">© 2021 Copyright: Odyssey Corp.</p>
+      </div>
+      <div class="col-md-5 pr-0 pl-0">
+        <a class="ml-5 mr-5" href="https://fmre.mx/"><img class="mx-auto" src="{% static 'resources/FMRE.png' %}" style="width: 6%;"></a>
+        <a class="ml-5 mr-5" href="https://www.upiita.ipn.mx/"><img class="mx-auto" src="{% static 'resources/upiita.png' %}" style="width: 11%; margin-top: 10px;"></a>
+        <a class="ml-5 mr-5" href="https://www.cinvestav.mx/"><img class="mx-auto" src="{% static 'resources/cinvestav.png' %}" style="width: 10%;"></a>
+      </div>
+    </div>
+  </footer>
+
+
+  <!-- script type="text/javascript">
     $('#formato').on('change', function(e) {
       $('input[id=formato-otro]').val("");
       if(e.target.value=="Otro")    $('div[id="div-otro"]').show();
       else    $('div[id="div-otro"]').hide();
     });
-
+  < /script --> 
+  
+</body>
+</html>
+<script type="text/javascript">
     $('#list-tab').on('click', function(e) {
       if(e.target.id == "list-agregar") $("#bt").text("Agregar");
       else $("#bt").text("Actualizar");
