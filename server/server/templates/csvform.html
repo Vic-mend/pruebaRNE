@@ -20,6 +20,11 @@
                  <button type="submit"> <span  style="margin-right:5px;"></span>Upload </button>
             </div> 
         </div>
+        <div>
+            {% for message in messages %}
+              <span id="message"> {{message}} </span>
+            {% endfor %}
+        </div>
     </form>
 </body>
 </html>

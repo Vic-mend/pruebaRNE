@@ -1,18 +1,19 @@
 from django.shortcuts import redirect, render
 from django.http import HttpResponse
-from .models import radioaficionados , estaciones_terrenas
+from .models import radioaficionados , estaciones_terrenas ,bitacoras
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth import get_user_model
+from itertools import islice
 #import pandas as pd
 import csv
 
 from django.contrib.auth.decorators import login_required
 from .decorators import unauthenticated_user, allowed_users
 
-from .helpfunctions import concatpass
-
+from .helpfunctions import concatpass,ft_object
+import time
 # Create your views here.
 @unauthenticated_user
 def loginUsr(request):
@@ -98,7 +99,9 @@ def csvhandler(request):
     if "GET" == request.method:
         return render(request, "csvform.html")
     # if not GET, then proceed
+    messages.info(request,"Subiendo ... ")
     try:
+        radioa =radioaficionados.objects.get(indicativo='FFF')
         csv_file = request.FILES["csv_file"]
         fname = csv_file.name
         if (not fname.endswith('.csv')) and (not fname.endswith('.TXT')) and (not fname.endswith('.CSV')) and (not fname.endswith('.txt')) :
@@ -110,10 +113,11 @@ def csvhandler(request):
             messages.error(request,"Uploaded file is too big (%.2f MB)." % (csv_file.size/(1000*1000),))
             return HttpResponse('Archivo muy grande')
         """
+        
         file_data = csv_file.read().decode("utf-8")		
 
         lines = file_data.split("\n")
-		#loop over the lines and save them in db. If error , store as string and then display
+        #loop over the lines and save them in db. If error , store as string and then display
         if csv_file.name.endswith('.csv') or csv_file.name.endswith('.CSV'):
             for line in lines:						
                 fields = line.split(",")
@@ -124,10 +128,99 @@ def csvhandler(request):
                 data_dict["notes"] = fields[3]"""
                 print(fields)
         elif csv_file.name.endswith('.txt') or csv_file.name.endswith('.TXT'):
-            for line in lines:						
-                fields = line.split("   ")
+            cont = 0;
+            print("entra")
+            ftlist = []
+            errlist = []
+            for line in lines:
+                line = line.rstrip()						
+                fields = line.split(" ")
+                fields = list(filter(None, fields))
                 
-                print(fields)
+                """objFT8 = {}
+                objFT8["fecha"] = fields[0][0:6]
+                objFT8["hora"] = fields[0][7:]
+                objFT8["frecuencia"] = fields[1]
+                objFT8["tx"] = fields[2] #Revisar
+                objFT8["modo"] = fields[3]
+                objFT8["ganancia"] = fields[4]
+                objFT8["desfasamiento"] = fields[5]
+                objFT8["canal"] = fields[6]
+                objFT8["transmisor"] = fields[7]
+                objFT8["receptor"] = fields[8]
+                objFT8["mensaje"] = fields[9]"""
+                cont+=1
+                try:
+                    
+                    ftlist.append(bitacoras(
+                        
+                        indicativo=radioa,
+                        fecha= "20{}-{}-{}".format(fields[0][0:2],fields[0][2:4],fields[0][4:6]),
+                        hora= "{}:{}:{}".format(fields[0][7:9],fields[0][9:11],fields[0][11:]),
+                        enlace= fields[1],
+                        estacion_rec= fields[3],
+                        grid= fields[5],
+                        freq = fields[6],
+                        modulacion = fields[7],
+                        reporte1 =fields[8],
+                        reporte2 = fields[9]
+                    ))
+
+
+                    """bitacoras.objects.update_or_create(
+                        indicativo=radioa,
+                        fecha= "20{}-{}-{}".format(fields[0][0:2],fields[0][2:4],fields[0][4:6]),
+                        hora= "{}:{}:{}".format(fields[0][7:9],fields[0][9:11],fields[0][11:]),
+                        enlace= fields[1],
+                        estacion_rec= fields[3],
+                        grid= fields[5],
+                        freq = fields[6],
+                        modulacion = fields[7],
+                        reporte1 =fields[8],
+                        reporte2 = fields[9]
+                    )"""
+
+
+                    """nuevab = bitacoras(indicativo=radioa,
+                        fecha= "20{}-{}-{}".format(fields[0][0:2],fields[0][2:4],fields[0][4:6]),
+                        hora= "{}:{}:{}".format(fields[0][7:9],fields[0][9:11],fields[0][11:]),
+                        enlace= fields[1],
+                        estacion_rec= fields[3],
+                        grid= fields[5],
+                        freq = fields[6],
+                        modulacion = fields[7],
+                        reporte1 =fields[8],
+                        reporte2 = fields[9])
+                    nuevab.save()"""
+
+                    #
+                except Exception as e:
+                    messages.error(request,"Problema en fila ")
+                    errlist.append(fields)
+                #print(cont)
+                #print(ft_object(fields))
+                #time.sleep(.1)
+                
+                #print(objlist)
+                #print(line)
+            print(len(ftlist))
+            print(len(errlist))
+            #bitacoras.objects.bulk_create(ftlist, ignore_conflicts=True)
+            batch_size = 100
+            x=0
+            while True:
+                #batch = list(slice(ftlist,x,x+batch_size,batch_size))
+                batch = list(islice(ftlist, x, x+batch_size))
+                if not batch:
+                    break
+                bitacoras.objects.bulk_create(batch, batch_size, ignore_conflicts=True)
+                x+=batch_size
+
+            """while  x<len(ftlist):
+                batch = ftlist[x:x+100]
+                x+=100
+                bitacoras.objects.bulk_create(batch, batch_size, ignore_conflicts=True)"""
+            #print(errlist)
 
     except Exception as e:
     	#logging.getLogger("error_logger").error("Unable to upload file. "+repr(e))
