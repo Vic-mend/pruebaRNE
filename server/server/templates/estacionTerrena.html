@@ -37,39 +37,39 @@
     <div class="col-md-7 col-sm-12 mt-2 ml-5 border rounded" style="border-width: 2px!important; max-height: 650px;  overflow: auto; max-width: 100%;">
       <div class="p-2">
         {% if not indestacion  %}
-        <form id="estacion" action="" method="POST" novalidate>
+        <form id="estacion" action="" method="POST" onsubmit="return handleSubir()" novalidate>
             {% csrf_token %}
             <div class="mb-0">
               <label for="nombre" class="col-form-label">Nombre de la Estación:</label>
-              <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Ej: Estación Principal" required>
+              <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Ej: Estación Principal" maxlength="30" required>
               <div class="invalid-feedback">
                 Ingrese un nombre para su estación
               </div>
             </div>
             <div class="mb-0">
               <label for="marca" class="col-form-label">Marca del Equipo:</label>
-              <input type="text" class="form-control" id="marca" name="marca" placeholder="Ej: Yaesu" required>
+              <input type="text" class="form-control" id="marca" name="marca" placeholder="Ej: Yaesu" maxlength="30" required>
               <div class="invalid-feedback">
                 Ingrese una marca del equipo
               </div>
             </div>
             <div class="mb-0">
                 <label for="modelo" class="col-form-label">Modelo del Equipo:</label>
-                <input type="text" class="form-control" id="modelo" name="modelo" placeholder="Ej: FT-123X" required>
+                <input type="text" class="form-control" id="modelo" name="modelo" placeholder="Ej: FT-123X" maxlength="40" required>
                 <div class="invalid-feedback">
                   Ingrese un modelo del equipo
                 </div>
             </div>            
             <div class="mb-0">
               <label for="grid" class="col-form-label">Grid Locator:</label>
-              <input type="text" class="form-control" id="grid" name="grid" placeholder="Ej: DK9HX3" required>
+              <input type="text" class="form-control" id="grid" name="grid" placeholder="Ej: DK9HX3" maxlength="10" required>
               <div class="invalid-feedback">
                 Ingrese un Grid Locator
               </div>
             </div>
             <div class="mb-0">
                 <label for="antena" class="col-form-label">Antena:</label>
-                <input type="text" class="form-control" id="antena" name="antena" placeholder="Ej: Yagi" required>
+                <input type="text" class="form-control" id="antena" name="antena" placeholder="Ej: Yagi" maxlength="30" required>
                 <div class="invalid-feedback">
                   Ingrese una antena
                 </div>
@@ -83,18 +83,18 @@
             </div>
             <div class="mb-0">
               <label for="ganancia" class="col-form-label">Ganancia [dBi]: (opcional)</label>
-              <input type="text" class="form-control" id="ganancia" name="ganancia" placeholder="Ej: 20">
+              <input type="number" class="form-control" id="ganancia" name="ganancia" placeholder="Ej: 20">
             </div>
             <div class="mb-0">
               <label for="polarizacion" class="col-form-label">Polarización:</label>
-              <input type="text" class="form-control" id="polarizacion" name="polarizacion" placeholder="Ej: Circular" required>
+              <input type="text" class="form-control" id="polarizacion" name="polarizacion" placeholder="Ej: Circular" maxlength="20" required>
               <div class="invalid-feedback">
                 Ingrese una polarización
               </div>
             </div>
             <div class="mb-0">
               <label for="altura" class="col-form-label">Altura sobre el piso [m]:</label>
-              <input type="text" class="form-control" id="altura" name="altura" placeholder="Ej: 10" required>
+              <input type="number" class="form-control" id="altura" name="altura" placeholder="Ej: 10" required>
               <div class="invalid-feedback">
                 Ingrese una altura sobre el piso dado en metros
               </div>
@@ -118,52 +118,52 @@
             </div>
             <div id="div-otro" class="mb-0" style="display: none;">
               <label for="formato-otro" class="col-form-label">Especifique:</label>
-              <input type="text" class="form-control" id="formato-otro" name="formato-otro" placeholder="">
+              <input type="text" class="form-control" id="formato-otro" name="formato-otro" maxlength="10" placeholder="">
               <div class="invalid-feedback">
                 Ingrese un formato de modulación
               </div>
             </div>
 
             <div class="mt-3">
-              <button type="submit" id="bt" class="btn btn-color text-white" onclick="handleSubir()">Agregar</button>
+              <button type="submit" id="bt" class="btn btn-color text-white" >Agregar</button>
             </div>
         </form>
         {% elif indestacion %}
         
         <label> Estación: </label><span style="font-weight: bold; margin-left: 5px;">{{indestacion.0.nombre_estacion}}</span>
-        <form id="estacion" action="" method="POST" novalidate>
+        <form id="estacion" action="{% url 'updateEstacion' indestacion.0.nombre_estacion %}" method="POST" onsubmit="return handleSubir()" novalidate>
           {% csrf_token %}
           <div class="mb-0">
             <label for="nombre" class="col-form-label">Nombre de la Estación:</label>
-            <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Ej: Estación Principal" value="{{indestacion.0.nombre_estacion}}" required>
+            <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Ej: Estación Principal" value="{{indestacion.0.nombre_estacion}}" maxlength="30" required>
             <div class="invalid-feedback">
               Ingrese un nombre para su estación
             </div>
           </div>
           <div class="mb-0">
             <label for="marca" class="col-form-label">Marca del Equipo:</label>
-            <input type="text" class="form-control" id="marca" name="marca" placeholder="Ej: Yaesu" value="{{indestacion.0.marca}}" required>
+            <input type="text" class="form-control" id="marca" name="marca" placeholder="Ej: Yaesu" value="{{indestacion.0.marca}}" maxlength="30" required>
             <div class="invalid-feedback">
               Ingrese una marca del equipo
             </div>
           </div>
           <div class="mb-0">
               <label for="modelo" class="col-form-label">Modelo del Equipo:</label>
-              <input type="text" class="form-control" id="modelo" name="modelo" placeholder="Ej: FT-123X" value="{{indestacion.0.modelo}}" required>
+              <input type="text" class="form-control" id="modelo" name="modelo" placeholder="Ej: FT-123X" value="{{indestacion.0.modelo}}" maxlength="40" required>
               <div class="invalid-feedback">
                 Ingrese un modelo del equipo
               </div>
           </div>            
           <div class="mb-0">
             <label for="grid" class="col-form-label">Grid Locator:</label>
-            <input type="text" class="form-control" id="grid" name="grid" placeholder="Ej: DK9HX3" value="{{indestacion.0.grid}}" required>
+            <input type="text" class="form-control" id="grid" name="grid" placeholder="Ej: DK9HX3" value="{{indestacion.0.grid}}" maxlength="10" required>
             <div class="invalid-feedback">
               Ingrese un Grid Locator
             </div>
           </div>
           <div class="mb-0">
               <label for="antena" class="col-form-label">Antena:</label>
-              <input type="text" class="form-control" id="antena" name="antena" placeholder="Ej: Yagi" value="{{indestacion.0.antena}}" required>
+              <input type="text" class="form-control" id="antena" name="antena" placeholder="Ej: Yagi" value="{{indestacion.0.antena}}" maxlength="30" required>
               <div class="invalid-feedback">
                 Ingrese una antena
               </div>
@@ -183,18 +183,18 @@
           </div>
           <div class="mb-0">
             <label for="ganancia" class="col-form-label">Ganancia [dBi]: (opcional)</label>
-            <input type="text" class="form-control" id="ganancia" name="ganancia" placeholder="Ej: 20" value="{{indestacion.0.ganancia}}">
+            <input type="number" class="form-control" id="ganancia" name="ganancia" placeholder="Ej: 20" value="{{indestacion.0.ganancia}}">
           </div>
           <div class="mb-0">
             <label for="polarizacion" class="col-form-label">Polarización:</label>
-            <input type="text" class="form-control" id="polarizacion" name="polarizacion" placeholder="Ej: Circular" value="{{indestacion.0.polarizacion}}" required>
+            <input type="text" class="form-control" id="polarizacion" name="polarizacion" placeholder="Ej: Circular" value="{{indestacion.0.polarizacion}}" maxlength="20" required>
             <div class="invalid-feedback">
               Ingrese una polarización
             </div>
           </div>
           <div class="mb-0">
             <label for="altura" class="col-form-label">Altura sobre el piso [m]:</label>
-            <input type="text" class="form-control" id="altura" name="altura" placeholder="Ej: 10" value="{{indestacion.0.altura}}">
+            <input type="number" class="form-control" id="altura" name="altura" placeholder="Ej: 10" value="{{indestacion.0.altura}}">
             <div class="invalid-feedback">
               Ingrese una altura sobre el piso dado en metros
             </div>
@@ -225,7 +225,7 @@
               <option  value="LSB">LSB</option>                    
               <option selected value="USB">USB</option>                    
               <option value="Otro">Otro</option>
-              {% elif indestacion.0.modulacion == "Otro" %}
+              {% else %}
               <option  value="FM">FM</option>                    
               <option  value="LSB">LSB</option>                    
               <option value="USB">USB</option>                    
@@ -235,16 +235,27 @@
                                   
             </select>
           </div>
-          <div id="div-otro" class="mb-0" style="display: none;">
-            <label for="formato-otro" class="col-form-label">Especifique:</label>
-            <input type="text" class="form-control" id="formato-otro" name="formato-otro" placeholder="">
-            <div class="invalid-feedback">
-              Ingrese un formato de modulación
+          {% if indestacion.0.modulacion != "FM" and indestacion.0.modulacion != "LSB" and indestacion.0.modulacion != "USB" %}
+            <div id="div-otro" class="mb-0" style="display: block;">
+              <label for="formato-otro" class="col-form-label">Especifique:</label>
+              <input type="text" class="form-control" id="formato-otro" name="formato-otro" placeholder="" maxlength="10" value="{{indestacion.0.modulacion}}">
+              <div class="invalid-feedback">
+                Ingrese un formato de modulación
+              </div>
             </div>
-          </div>
+          {% else %}
+            <div id="div-otro" class="mb-0" style="display: none;">
+              <label for="formato-otro" class="col-form-label">Especifique:</label>
+              <input type="text" class="form-control" id="formato-otro" name="formato-otro" maxlength="10" placeholder="">
+              <div class="invalid-feedback">
+                Ingrese un formato de modulación
+              </div>
+            </div>
+          {% endif %}
 
           <div class="mt-3">
-            <button type="submit" class="btn btn-color text-white" onclick="handleSubir()">Actualizar</button>
+            <button type="submit" class="btn btn-success text-white" onclick="handleSubir()">Actualizar</button>
+            <a href="{% url 'deleteEstacion' indestacion.0.id %}" class="btn btn-danger">Borrar</a>
           </div>
       </form>
         {% endif %}
@@ -281,12 +292,21 @@
       
       const dataEstacion ={ nombre, marca, modelo, grid, antena, tipo, ganancia, polarizacion, altura, formato, formatoOtro };
       
-      if(nombre == "" || marca == " " || modelo == "" || grid == "" || antena == "" || polarizacion == "" || altura == ""){
+      if(nombre == "" || marca == "" || modelo == "" || grid == "" || antena == "" || polarizacion == "" || altura == ""){
         var formLogin = document.querySelectorAll('#estacion');
+        document.getElementById("formato-otro").required = true;
         formLogin[0].classList.remove('was-validated');
         formLogin[0].classList.add('was-validated');
+        return false;
       }
-      else{
+      else {
+        if(formato == "Otro" && formatoOtro == ""){
+          var formLogin = document.querySelectorAll('#estacion');          
+          document.getElementById("formato-otro").required = true;
+          formLogin[0].classList.remove('was-validated');
+          formLogin[0].classList.add('was-validated');
+          return false;
+        }
         console.log("Subir Estación: ",dataEstacion);
       }
     }

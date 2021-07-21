@@ -1,3 +1,4 @@
+from django.db.models.fields import NullBooleanField
 from django.shortcuts import redirect, render
 from django.http import HttpResponse
 from .models import radioaficionados , estaciones_terrenas ,bitacoras
@@ -5,9 +6,12 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth import get_user_model
+from django.http import HttpResponseRedirect
 from itertools import islice
 #import pandas as pd
 import csv
+
+from .formvalidations import estaciones_validacion
 
 from django.contrib.auth.decorators import login_required
 from .decorators import unauthenticated_user, allowed_users
@@ -128,7 +132,7 @@ def csvhandler(request):
                 data_dict["notes"] = fields[3]"""
                 print(fields)
         elif csv_file.name.endswith('.txt') or csv_file.name.endswith('.TXT'):
-            cont = 0;
+            cont = 0
             print("entra")
             ftlist = []
             errlist = []
@@ -254,19 +258,29 @@ def estacionTerrena(request):
         tus_estaciones = estaciones_terrenas.objects.filter(indicativo=usr)
         context= {'estaciones' : tus_estaciones, 'indestacion':indestacion}
     elif request.method == 'POST':
-        new_est = estaciones_terrenas()
-        new_est.nombre_estacion= request.POST['nombre']
-        new_est.marca = request.POST['marca']
-        new_est.modelo = request.POST['modelo']
-        new_est.grid = request.POST['grid']
-        new_est.antena = request.POST['antena']
-        new_est.tipo_antena = request.POST['tipo']
-        new_est.ganancia = request.POST['ganancia']
-        new_est.polarizacion = request.POST['polarizacion']
-        new_est.altura = request.POST['altura']
-        new_est.modulacion = request.POST['formato']
-        new_est.indicativo = usr
-        new_est.save()
+        if(estaciones_validacion(request.POST)):
+            new_est = estaciones_terrenas()
+            new_est.nombre_estacion= request.POST['nombre']
+            new_est.marca = request.POST['marca']
+            new_est.modelo = request.POST['modelo']
+            new_est.grid = request.POST['grid']
+            new_est.antena = request.POST['antena']
+            new_est.tipo_antena = request.POST['tipo']
+
+            if(request.POST['ganancia'] == ""):
+                new_est.ganancia = 0
+            else:
+                new_est.ganancia = request.POST['ganancia']
+
+            new_est.polarizacion = request.POST['polarizacion']
+            new_est.altura = request.POST['altura']
+
+            if(request.POST['formato'] == "Otro"):
+                new_est.modulacion = request.POST['formato-otro']
+            else:
+                new_est.modulacion = request.POST['formato']
+            new_est.indicativo = usr
+            new_est.save()
         tus_estaciones = estaciones_terrenas.objects.filter(indicativo=usr)
         context= {'estaciones' : tus_estaciones, 'indestacion':indestacion}
     return render(request,"estacionTerrena.html",context)
@@ -278,16 +292,51 @@ def estacionTerrena2(request,indestacion):
 
     #context= {'estaciones' : tus_estaciones}
     if tus_estaciones and not ind_est == None:
-        
         context= {'estaciones' : tus_estaciones, 'indestacion':ind_est}
     else:
         context= {'estaciones' : tus_estaciones, 'indestacion':None}
     
-    if(indestacion == 'nueva'):
-        return render(request,"estacionTerrena.html",context)
-    else:
-        return render(request,"estacionTerrena.html",context)
+    # if(indestacion == 'nueva'):
+    #     return render(request,"estacionTerrena.html",context)
+    # else:
+    #     return render(request,"estacionTerrena.html",context)
+    # return render(request, "estacionTerrena", context)
+    return render(request,"estacionTerrena.html",context)
 
+def estacionTerrenaDelete(request, idT):
+    usr = radioaficionados(request.user)
+    tus_estaciones = estaciones_terrenas.objects.filter(indicativo=usr)
+    indestacion = None
+    context= {'estaciones' : tus_estaciones, 'indestacion':indestacion}
+
+    # Que sea el dueño?
+    estacion = estaciones_terrenas.objects.filter(id=idT)
+    estacion.delete()
+    
+    return redirect('/estacionterrena/', context)
+
+def estacionTerrenaUpdate(request, indestacion):
+    usr = radioaficionados(request.user)
+
+    if request.method == 'POST':
+        if(request.POST['formato'] == "Otro"):
+            modulacion = request.POST['formato-otro']
+        else:
+            modulacion = request.POST['formato']
+
+        estaciones_terrenas.objects.filter(indicativo=usr, nombre_estacion = indestacion).update(
+            nombre_estacion = request.POST['nombre'], 
+            marca = request.POST['marca'],
+            grid = request.POST['grid'],
+            antena = request.POST['antena'],
+            tipo_antena = request.POST['tipo'],
+            ganancia = request.POST['ganancia'],
+            polarizacion = request.POST['polarizacion'],
+            altura = request.POST['altura'],
+            modulacion = modulacion,
+        )
+
+    return HttpResponseRedirect("/estacionterrena/{indestacion}/".format(indestacion= request.POST['nombre']))
 
 def pruebaestaciones(request,indestacion):
     #print(indestacion)
