@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import main, register, loginUsr, home, estacionTerrena, reportes, logoutUser, csvhandler, estacionTerrena2, estacionTerrenaDelete, estacionTerrenaUpdate
+from .views import *
 
 
 from .views import pruebaestaciones,pruebaestaciones2

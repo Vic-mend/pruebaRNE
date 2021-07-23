@@ -11,7 +11,7 @@ from itertools import islice
 #import pandas as pd
 import csv
 
-from .formvalidations import estaciones_validacion
+from .formvalidations import estaciones_validacion, login_validation, register_validation
 
 from django.contrib.auth.decorators import login_required
 from .decorators import unauthenticated_user, allowed_users
@@ -22,16 +22,17 @@ import time
 @unauthenticated_user
 def loginUsr(request):
     if request.method == 'POST':
-        usrname = request.POST['indicativoL']
-        usrpass = request.POST['contrasenaL']
-        usr_rad = authenticate(request, username = usrname, password = usrpass)
+        if(login_validation(request.POST)):
+            usrname = request.POST['indicativoL']
+            usrpass = request.POST['contrasenaL']
+            usr_rad = authenticate(request, username = usrname, password = usrpass)
 
-        if usr_rad is not None:
-            login(request,usr_rad)
-            #return HttpResponse('LogIn exitoso')
-            return redirect("home")
-        else: 
-            messages.info(request,'Datos erroneos')
+            if usr_rad is not None:
+                login(request,usr_rad)
+                #return HttpResponse('LogIn exitoso')
+                return redirect("home")
+            else: 
+                messages.info(request,'Datos erroneos')
             #return HttpResponse('Datos erroneos')
         """if radioaficionados.objects.filter(indicativo = request.POST['indicativoL']).exists():
             tolog = radioaficionados.objects.get(indicativo = request.POST['indicativoL'])
@@ -65,21 +66,21 @@ def register(request):
         return redirect('index')
     elif request.method == 'POST':
         #print(request.POST['indicativo'])
-        
-        new_rad = radioaficionados()
-        new_rad.indicativo = request.POST['indicativoR']
-        new_rad.password = request.POST['contrasenaR']
-        new_rad.nombre = request.POST['nombreR']
-        new_rad.apellidoP = request.POST['apellidoPR']
-        new_rad.apellidoM = request.POST['apellidoMR']
-        new_rad.municipio = request.POST['municipioR']
-        new_rad.estado = request.POST['estadoR']
-        new_rad.save()
-        nuser = User.objects.create_user(new_rad.indicativo, '', new_rad.password)
-        nuser.last_name = "{} {}".format(new_rad.nombre,new_rad.apellidoP)
-        nuser.save()
-        messages.success(request,'Usuario ' + new_rad.indicativo +' creado')
-        return redirect('index')
+        if(register_validation(request.POST)):
+            new_rad = radioaficionados()
+            new_rad.indicativo = request.POST['indicativoR']
+            new_rad.password = request.POST['contrasenaR']
+            new_rad.nombre = request.POST['nombreR']
+            new_rad.apellidoP = request.POST['apellidoPR']
+            new_rad.apellidoM = request.POST['apellidoMR']
+            new_rad.municipio = request.POST['municipioR']
+            new_rad.estado = request.POST['estadoR']
+            new_rad.save()
+            nuser = User.objects.create_user(new_rad.indicativo, '', new_rad.password)
+            nuser.last_name = "{} {}".format(new_rad.nombre,new_rad.apellidoP)
+            nuser.save()
+            messages.success(request,'Usuario ' + new_rad.indicativo +' creado')
+            return redirect('index')
 
 @login_required(login_url='index')
 def home(request):

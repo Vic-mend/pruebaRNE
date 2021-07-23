@@ -17,7 +17,7 @@
     <div class="sidenav">
       <div class="login-main-text">
           <h1 style="font-size: 200%;">Experimentos relacionados con el estudio de los efectos del canal de propagación ionosférica.</h1>
-          <p>Inicia sesión o Registrate para accesar.</p>
+          <p>Inicia sesión o regístrate para accesar.</p>
           <div class="mt-5" style="position:static; bottom: 0; display: flex; justify-content: center; flex-wrap: wrap;">
             <img src="{% static 'resources/ipnC.png' %}" style="width: 13%; margin: 15px;">
             <img src="{% static 'resources/unam.png' %}" style="width: 14%; margin: 15px;">
@@ -33,23 +33,23 @@
     <div class="main">
       <div class="col-md-6 col-sm-12">
           <div class="login-form">
-            <form id="login" method="POST" action="" novalidate>
+            <form id="login" method="POST" action="" onsubmit="return handleLogin()" novalidate>
               {% csrf_token %}
                 <div class="form-group">
                   <label>Indicativo</label>
-                  <input type="text" class="form-control" placeholder="Indicativo" id="indicativoL" name="indicativoL" required>
+                  <input type="text" class="form-control" placeholder="Indicativo" id="indicativoL" name="indicativoL" maxlength="10" required>
                   <div class="invalid-feedback">
                     Ingrese un indicativo
                   </div>
                 </div>
                 <div class="form-group">
                   <label>Contraseña</label>
-                  <input type="password" class="form-control" placeholder="Contraseña" id="contrasenaL" name="contrasenaL" required>
+                  <input type="password" class="form-control" placeholder="Contraseña" id="contrasenaL" name="contrasenaL" maxlength="100" required>
                   <div class="invalid-feedback">
                     Ingrese una contraseña
                   </div>
                 </div>
-                <button type="submit" class="btn btn-color text-white" onclick="handleLogin()">Iniciar Sesión</button>
+                <button type="submit" class="btn btn-color text-white">Iniciar Sesión</button>
                 <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#registerModal" id="registro">Registrarse</button>
             </form>
             
@@ -63,43 +63,43 @@
     <div class="modal fade show modBack" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
-          <div class="modal-header">
+          <div class="modal-header" style="padding: .5rem 1rem!important;">
             <h5 class="modal-title" id="exampleModalLabel">Registro</h5>
           </div>
-          <div class="modal-body">
-            <form id="register" action="register/" method="POST" novalidate>
+          <div class="modal-body pt-0">
+            <form id="register" action="register/" method="POST" onsubmit="return handleRegister()" novalidate>
               {% csrf_token %}
               <div class="mb-0">
                 <label for="indicativoR" class="col-form-label">Indicativo:</label>
-                <input type="text" class="form-control" id="indicativoR" name="indicativoR" required>
+                <input type="text" class="form-control" id="indicativoR" name="indicativoR" maxlength="10" required>
                 <div class="invalid-feedback">
                   Ingrese un indicativo
                 </div>
               </div>
               <div class="mb-0">
                 <label for="contrasenaR" class="col-form-label">Contraseña:</label>
-                <input type="password" class="form-control" id="contrasenaR" name="contrasenaR" required>
+                <input type="password" class="form-control" id="contrasenaR" name="contrasenaR" maxlength="100" required>
                 <div class="invalid-feedback">
                   Ingrese una contraseña
                 </div>
               </div>
               <div class="mb-0">
                 <label for="nombreR" class="col-form-label">Nombre(s):</label>
-                <input type="text" class="form-control" id="nombreR" name="nombreR" required>
+                <input type="text" class="form-control" id="nombreR" name="nombreR" maxlength="25" required>
                 <div class="invalid-feedback">
                   Ingrese un nombre(s)
                 </div>
               </div>
               <div class="mb-0">
                 <label for="apellidoPR" class="col-form-label">Apellido Paterno:</label>
-                <input type="text" class="form-control" id="apellidoPR" name="apellidoPR" required>
+                <input type="text" class="form-control" id="apellidoPR" name="apellidoPR" maxlength="25" required>
                 <div class="invalid-feedback">
                   Ingrese un apellido paterno
                 </div>
               </div>
               <div class="mb-1">
                 <label for="apellidoMR" class="col-form-label">Apellido Materno:</label>
-                <input type="text" class="form-control" id="apellidoMR" name="apellidoMR" required>
+                <input type="text" class="form-control" id="apellidoMR" name="apellidoMR" maxlength="25" required>
                 <div class="invalid-feedback">
                   Ingrese un apellido materno
                 </div>
@@ -107,7 +107,7 @@
               <div class="mb-0">
                 <div>
                   <label for="estadoR" class="col-form-label">Estado:</label>
-                  <select class="form-select mb-2" aria-label="Default select example" id="estadoR" name="estadoR" required>
+                  <select class="form-select mb-2" aria-label="Default select example" id="estadoR" name="estadoR" maxlength="30" required>
                     <option selected value=""></option>                    
                   </select>
                   <div class="invalid-feedback">
@@ -116,7 +116,7 @@
                 </div>
                 <div>
                   <label for="municipioR" class="col-form-label">Municipio:</label>
-                  <select class="form-select form-select-lg mb-2 text-uppercase" aria-label="Default select example" id="municipioR" name="municipioR" style="max-width: 60%;" required>
+                  <select class="form-select form-select-lg mb-2 text-uppercase" aria-label="Default select example" id="municipioR" name="municipioR" maxlength="100" style="max-width: 60%;" required>
                     
                   </select>
                   <div class="invalid-feedback">
@@ -125,11 +125,10 @@
                 </div>
               </div>
 
-              <div class="modal-footer">
+              <div class="modal-footer pb-0">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                <button type="submit" class="btn btn-color text-white" onclick="handleRegister()">Registrarse</button>
+                <button type="submit" class="btn btn-color text-white">Registrarse</button>
               </div>
-
 
             </form>
           </div>
@@ -138,7 +137,6 @@
       </div>
     </div>
 
-    <script src="{% static 'scripts/main.js' %}"></script>
     <script>
       $.getJSON("{% static './resources/estados.json' %}", function(json) {
         $(document).ready(function(){
@@ -163,6 +161,45 @@
           }
         });
       });
+
+      function handleRegister() {
+        var indicativo = document.getElementById("indicativoR").value;
+        var contrasena = document.getElementById("contrasenaR").value;
+        var nombre = document.getElementById("nombreR").value;
+        var apellidoP = document.getElementById("apellidoPR").value;
+        var apellidoM = document.getElementById("apellidoMR").value;
+        var estado = document.getElementById("estadoR").value;
+        var municipio = document.getElementById("municipioR").value;
+
+        const dataRegister ={ indicativo, contrasena ,nombre, apellidoP, apellidoM, estado, municipio };
+        
+        if(indicativo == "" || contrasena == "" || nombre == "" || apellidoP == "" || apellidoM == "" || estado == "" || municipio == ""){
+          var formRegister = document.querySelectorAll('#register');
+          formRegister[0].classList.remove('was-validated');
+          formRegister[0].classList.add('was-validated');
+          return false;
+        }
+        else{
+          console.log("Registrar:",dataRegister)
+        }
+      }
+
+      function handleLogin(){
+        var indicativo = document.getElementById("indicativoL").value;
+        var contrasena = document.getElementById("contrasenaL").value;
+
+        const dataRegister ={ indicativo, contrasena };
+        
+        if(indicativo == "" || contrasena == ""){
+          var formLogin = document.querySelectorAll('#login');
+          formLogin[0].classList.remove('was-validated');
+          formLogin[0].classList.add('was-validated');
+          return false;
+        }
+        else{
+          console.log("Login:",dataRegister);
+        }
+      }
     </script>
   </body>
 </html>
