@@ -1,0 +1,9 @@
+#responsiveDiv{
+    margin-left: 3rem !important;
+}
+
+@media only screen and (max-width: 766px) {
+    #responsiveDiv{
+        margin-left: 0rem !important;
+    }
+}
