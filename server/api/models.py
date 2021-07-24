@@ -17,6 +17,7 @@ class radioaficionados(models.Model):
 
 class bitacoras(models.Model):
     indicativo = models.ForeignKey(radioaficionados, on_delete=models.CASCADE)
+    nombre_estacion = models.CharField(max_length=30, blank=False, default='Sin Estacion')
     fecha = models.DateField()
     hora = models.TimeField()
     enlace = models.CharField(max_length=10, blank=True)
@@ -40,3 +41,7 @@ class estaciones_terrenas(models.Model):
     altura = models.DecimalField(max_digits=7, decimal_places=4, blank=False)
     modulacion = models.CharField(max_length=10, blank=False, null=True)
     grid = models.CharField(max_length=10, blank=False)
+
+class comentarios(models.Model):
+    indicativo = models.ForeignKey(radioaficionados, on_delete=models.CASCADE)
+    comentario = models.CharField(max_length=600, blank=False)

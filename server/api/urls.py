@@ -19,5 +19,6 @@ urlpatterns = [
     path('pestacion/', pruebaestaciones2, name="pestacion"),
     path('pestacion/<str:indestacion>/', pruebaestaciones, name="pestacionnum"),
     path('reportes/', reportes, name="reportes"),
+    path('commentary/', handleComments, name="handleComments"),
     
 ]
