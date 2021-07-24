@@ -1,12 +1,18 @@
 {% extends "template.html" %}
 
 {% block content %}
+  <div>
+      {% for message in messages %}
+              <span id="message"> {{message}} </span>
+      {% endfor %}
+  </div>
   <div class="container p-3 mt-3 border rounded" style="border-width: 2px!important;">
-    <form id="reporte" action="" method="POST" novalidate  style="display: flex; flex-wrap: wrap; justify-content: space-evenly;">
+    <form id="reporte" name="reporte" action="" method="POST" enctype="multipart/form-data" novalidate  style="display: flex; flex-wrap: wrap; justify-content: space-evenly;">
       {% csrf_token %}
       <div class="input-group" style="max-width: 60%;">
         <div class="custom-file">
-          <input type="file" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01" value="">
+          <input type="file" class="custom-file-input" name="csv_file" id="csv_file" aria-describedby="inputGroupFileAddon01" value="" required="True" accept=".csv,.txt">
+          
           <label class="custom-file-label" for="inputGroupFile01">Seleccione un reporte</label>
         </div>
         <div class="invalid-feedback file">
@@ -32,7 +38,8 @@
         </div>
       </div>
       <div class="mb-0">
-        <button class="btn btn-outline-success" type="button" onclick="handleSubir()">Subir</button>
+        <!-- button class="btn btn-outline-success" type="button" onclick="handleSubir()">Subir</button -->
+        <button type="button" class="btn btn-outline-success" onclick="handleupload()"> <span  style="margin-right:5px;"></span>Upload </button>
       </div>
     </form>
   </div>
@@ -158,6 +165,76 @@
     </div>
   </div>
 
+  <!--  MODAL COMMENTS  -->
+  <div class="modal fade show modBack" id="commentModal" name="commentModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Deja un comentario</h5>
+        </div>
+        <div class="modal-body">
+          <form id="commentary" name="commentary" action="/commentary/" method="POST" novalidate>
+            {% csrf_token %}
+            <div class="mb-0">
+              <label for="indicativoR" class="col-form-label">Comentarios:</label>
+              <textarea class="form-control" id="areacomment" name="areacomment" rows="3"></textarea>
+              <div class="invalid-feedback">
+                Ingrese un Comentario
+              </div>
+            </div>
+            
+            
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+              <button type="submit" class="btn btn-color text-white" >Enviar</button>
+            </div>
+
+
+          </form>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+
+
+  <!--  MODAL DE SUBIENDO  -->
+  <div class="modal" fade show modBack" id="uploadModal" name="uploadModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Espere un momento</h5>
+          
+        </div>
+        <div class="modal-body">
+          <p>Se esta subiendo su archivo</p>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+  <script>
+    function handleupload(){
+
+      
+      $(document).ready(function(){
+          $("#uploadModal").modal('show');
+      });
+
+      document.getElementById("reporte").submit();
+      
+    }
+
+  </script>
+
+
+
   <script type="text/javascript">
     $('#inputGroupFile01').on('change',function(){
       var fileName = "Seleccione un reporte";
@@ -186,4 +263,14 @@
       }
     }
   </script>
+
+  {% if uploadFlag %}
+  <script type="text/javascript">
+      $(document).ready(function(){
+          $("#commentModal").modal('show');
+      });
+  </script>
+{% endif %}
+
+
 {% endblock %}

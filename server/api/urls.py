@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import main, register, loginUsr, home, estacionTerrena, reportes, logoutUser, csvhandler, estacionTerrena2, estacionTerrenaDelete, estacionTerrenaUpdate
+from .views import main, register, loginUsr, home, estacionTerrena, reportes, logoutUser, csvhandler, estacionTerrena2, estacionTerrenaDelete, estacionTerrenaUpdate, handleComments
 
 
 from .views import pruebaestaciones,pruebaestaciones2
@@ -19,5 +19,6 @@ urlpatterns = [
     path('pestacion/', pruebaestaciones2, name="pestacion"),
     path('pestacion/<str:indestacion>/', pruebaestaciones, name="pestacionnum"),
     path('reportes/', reportes, name="reportes"),
+    path('commentary/', handleComments, name="handleComments"),
     
 ]
