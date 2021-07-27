@@ -7,13 +7,13 @@
       {% endfor %}
   </div>
   <div class="container p-3 mt-3 border rounded" style="border-width: 2px!important;">
-    <form id="reporte" name="reporte" action="" method="POST" enctype="multipart/form-data" novalidate  style="display: flex; flex-wrap: wrap; justify-content: space-evenly;">
+    <form id="reporte" name="reporte" action="{% url 'reportes' %}" method="POST" onsubmit="return handleSubir()" enctype="multipart/form-data" novalidate  style="display: flex; flex-wrap: wrap; justify-content: space-evenly;">
       {% csrf_token %}
       <div class="input-group" style="max-width: 60%;">
         <div class="custom-file">
           <input type="file" class="custom-file-input" name="csv_file" id="csv_file" aria-describedby="inputGroupFileAddon01" value="" required="True" accept=".csv,.txt">
           
-          <label class="custom-file-label" for="inputGroupFile01">Seleccione un reporte</label>
+          <label class="custom-file-label" for="csv_file">Seleccione un reporte</label>
         </div>
         <div class="invalid-feedback file">
           Escoja un reporte
@@ -38,8 +38,7 @@
         </div>
       </div>
       <div class="mb-0">
-        <!-- button class="btn btn-outline-success" type="button" onclick="handleSubir()">Subir</button -->
-        <button type="button" class="btn btn-outline-success" onclick="handleupload()"> <span  style="margin-right:5px;"></span>Upload </button>
+        <button type="submit" class="btn btn-outline-success"><span style="margin-right:5px;"></span>Upload</button>
       </div>
     </form>
   </div>
@@ -216,27 +215,8 @@
   </div>
 
 
-
-
-
-  <script>
-    function handleupload(){
-
-      
-      $(document).ready(function(){
-          $("#uploadModal").modal('show');
-      });
-
-      document.getElementById("reporte").submit();
-      
-    }
-
-  </script>
-
-
-
   <script type="text/javascript">
-    $('#inputGroupFile01').on('change',function(){
+    $('#csv_file').on('change',function(){
       var fileName = "Seleccione un reporte";
       if($(this).val()){
         fileName = $(this).val().replace('C:\\fakepath\\', "");
@@ -247,7 +227,7 @@
 
     function handleSubir(){
       var estacion = document.getElementById("estacion").value;
-      var archivo = document.getElementById("inputGroupFile01").value.replace('C:\\fakepath\\', "");
+      var archivo = document.getElementById("csv_file").value.replace('C:\\fakepath\\', "");
 
       const dataReporte ={ estacion, archivo };
       
@@ -261,17 +241,21 @@
       else{
         $('.file').css('display', 'none');
         console.log("Subir: ",dataReporte);
+
+        $(document).ready(function(){
+          $("#uploadModal").modal('show');
+        });
       }
     }
   </script>
 
   {% if uploadFlag %}
-  <script type="text/javascript">
-      $(document).ready(function(){
-          $("#commentModal").modal('show');
-      });
-  </script>
-{% endif %}
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $("#commentModal").modal('show');
+        });
+    </script>
+  {% endif %}
 
 
 {% endblock %}
