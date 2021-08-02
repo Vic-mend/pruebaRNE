@@ -67,19 +67,28 @@ def register(request):
     elif request.method == 'POST':
         #print(request.POST['indicativo'])
         if(register_validation(request.POST)):
-            new_rad = radioaficionados()
-            new_rad.indicativo = request.POST['indicativoR']
-            new_rad.password = request.POST['contrasenaR']
-            new_rad.nombre = request.POST['nombreR']
-            new_rad.apellidoP = request.POST['apellidoPR']
-            new_rad.apellidoM = request.POST['apellidoMR']
-            new_rad.municipio = request.POST['municipioR']
-            new_rad.estado = request.POST['estadoR']
-            new_rad.save()
-            nuser = User.objects.create_user(new_rad.indicativo, '', new_rad.password)
-            nuser.last_name = "{} {}".format(new_rad.nombre,new_rad.apellidoP)
-            nuser.save()
-            messages.success(request,'Usuario ' + new_rad.indicativo +' creado')
+            try:
+                check = radioaficionados.objects.get(indicativo=request.POST['indicativoR']).indicativo
+            except:
+                check = None
+            
+            if(check == None):
+                new_rad = radioaficionados()
+                new_rad.indicativo = request.POST['indicativoR']
+                new_rad.password = request.POST['contrasenaR']
+                new_rad.nombre = request.POST['nombreR']
+                new_rad.apellidoP = request.POST['apellidoPR']
+                new_rad.apellidoM = request.POST['apellidoMR']
+                new_rad.municipio = request.POST['municipioR']
+                new_rad.estado = request.POST['estadoR']
+                new_rad.save()
+                nuser = User.objects.create_user(new_rad.indicativo, '', new_rad.password)
+                nuser.last_name = "{} {}".format(new_rad.nombre,new_rad.apellidoP)
+                nuser.save()
+                messages.success(request,'Usuario ' + new_rad.indicativo +' creado')
+            else:
+                messages.success(request,'Indicativo ' + request.POST['indicativoR'] +' ocupado.')
+
             return redirect('index')
 
 @login_required(login_url='index')

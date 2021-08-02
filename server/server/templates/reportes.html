@@ -29,7 +29,7 @@
             {% endfor %}
           {% else %}
           <!-- agregar un pop up -->
-            <option value="Estacion 1">Sin estaciones</option>
+            <option value="Sin Estacion">Sin estación</option>
           {%endif%}
                              
         </select>
@@ -49,7 +49,6 @@
         <thead>
           <tr>
             <th scope="col">Fecha</th>
-            <th scope="col">id</th>
             <th scope="col">Hora</th>
             <th scope="col">Enlace</th>
             <th scope="col">Estación Receptora</th>
@@ -66,7 +65,6 @@
             {% for report in reports %}
               <tr>
                 <th scope="row">{{report.fecha}}</th>
-                <td>{{report.id}}</td>
                 <td>{{report.hora}}</td>
                 <td>{{report.enlace}}</td>
                 <td>{{report.estacion_rec}}</td>
@@ -80,7 +78,7 @@
 
           {% else %}
             <tr>
-              <th scope="row"></th>
+              <th scope="row">-</th>
               <td>-</td>
               <td>-</td>
               <td>-</td>
