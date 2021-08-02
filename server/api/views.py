@@ -299,6 +299,10 @@ def reportes(request):
     data = {}
     if "GET" == request.method:
         #return render(request, "csvform.html")
+        
+        reports = bitacoras.objects.filter(indicativo=usr).order_by('id').reverse()[:100]
+        context= {'estaciones' : tus_estaciones, 'uploadFlag': False, 'reports': reports}    
+
         return render(request, "reportes.html",context)
     # if not GET, then proceed
     elif request.method == 'POST':
@@ -376,13 +380,20 @@ def reportes(request):
         
         #return HttpResponse('Hecho')
         messages.info(request,"Completado")
+
+        reports = bitacoras.objects.filter(indicativo=usr).order_by('id').reverse()[:100]
+        context= {'estaciones' : tus_estaciones, 'uploadFlag': True, 'reports': reports}    
+
         return render(request, "reportes.html",context)
 
 def handleComments(request):
     usr = radioaficionados(request.user)
     radioa =radioaficionados.objects.get(indicativo=usr.indicativo)
     tus_estaciones = estaciones_terrenas.objects.filter(indicativo=usr)
-    context= {'estaciones' : tus_estaciones, 'uploadFlag': False}
+
+    reports = bitacoras.objects.filter(indicativo=usr).order_by('id').reverse()[:100]
+    context= {'estaciones' : tus_estaciones, 'uploadFlag': False, 'reports': reports} 
+
     print(request.POST['areacomment'])
     try:
         

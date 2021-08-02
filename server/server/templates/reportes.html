@@ -49,6 +49,7 @@
         <thead>
           <tr>
             <th scope="col">Fecha</th>
+            <th scope="col">id</th>
             <th scope="col">Hora</th>
             <th scope="col">Enlace</th>
             <th scope="col">Estación Receptora</th>
@@ -60,105 +61,37 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <th scope="row">13/07/2021</th>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-          </tr>
-          <tr>
-            <th scope="row">14/07/2021</th>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-          </tr>
-          <tr>
-            <th scope="row">15/07/2021</th>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-          </tr>
-          <tr>
-            <th scope="row">16/07/2021</th>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-          </tr>
-          <tr>
-            <th scope="row">17/07/2021</th>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-          </tr>
-          <tr>
-            <th scope="row">18/07/2021</th>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-          </tr>
-          <tr>
-            <th scope="row">19/07/2021</th>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-          </tr>
-          <tr>
-            <th scope="row">20/07/2021</th>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-          </tr>
-          <tr>
-            <th scope="row">21/07/2021</th>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-          </tr>
+
+          {% if reports %}
+            {% for report in reports %}
+              <tr>
+                <th scope="row">{{report.fecha}}</th>
+                <td>{{report.id}}</td>
+                <td>{{report.hora}}</td>
+                <td>{{report.enlace}}</td>
+                <td>{{report.estacion_rec}}</td>
+                <td>{{report.grid}}</td>
+                <td>{{report.freq}}</td>
+                <td>{{report.modulacion}}</td>
+                <td>{{report.reporte1}}</td>
+                <td>{{report.reporte2}}</td>
+              </tr>
+            {% endfor %}
+
+          {% else %}
+            <tr>
+              <th scope="row"></th>
+              <td>-</td>
+              <td>-</td>
+              <td>-</td>
+              <td>-</td>
+              <td>-</td>
+              <td>-</td>
+              <td>-</td>
+              <td>-</td>
+            </tr>
+            <p> Sin reportes </p>
+          {% endif %}
         </tbody>
       </table>
     </div>
@@ -182,14 +115,10 @@
               </div>
             </div>
             
-            
-
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
               <button type="submit" class="btn btn-color text-white" >Enviar</button>
             </div>
-
-
           </form>
         </div>
         
