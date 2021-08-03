@@ -50,13 +50,15 @@
           <tr>
             <th scope="col">Fecha</th>
             <th scope="col">Hora</th>
-            <th scope="col">Enlace</th>
-            <th scope="col">Estación Receptora</th>
-            <th scope="col">Grid</th>
-            <th scope="col">Frecuencia</th>
-            <th scope="col">Modulación</th>
-            <th scope="col">Reporte 1</th>
-            <th scope="col">Reporte 2</th>
+            <th scope="col">Frecuencia (MHz)</th>
+            <th scope="col">Rx/Tx</th>
+            <th scope="col">Modo</th>
+            <th scope="col">dB</th>
+            <th scope="col">DT</th>
+            <th scope="col">Frecuencia (Tx)</th>
+            <th scope="col">Mensaje 1</th>
+            <th scope="col">Mensaje 2</th>
+            <th scope="col">Mensaje 3</th>
           </tr>
         </thead>
         <tbody>
@@ -66,19 +68,23 @@
               <tr>
                 <th scope="row">{{report.fecha}}</th>
                 <td>{{report.hora}}</td>
-                <td>{{report.enlace}}</td>
-                <td>{{report.estacion_rec}}</td>
-                <td>{{report.grid}}</td>
                 <td>{{report.freq}}</td>
-                <td>{{report.modulacion}}</td>
-                <td>{{report.reporte1}}</td>
-                <td>{{report.reporte2}}</td>
+                <td>{{report.rt}}</td>
+                <td>{{report.modo}}</td>
+                <td>{{report.db}}</td>
+                <td>{{report.dt}}</td>
+                <td>{{report.freq_tx}}</td>
+                <td>{{report.mensaje1}}</td>
+                <td>{{report.mensaje2}}</td>
+                <td>{{report.mensaje3}}</td>
               </tr>
             {% endfor %}
 
           {% else %}
             <tr>
               <th scope="row">-</th>
+              <td>-</td>
+              <td>-</td>
               <td>-</td>
               <td>-</td>
               <td>-</td>
