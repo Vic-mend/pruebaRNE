@@ -67,27 +67,63 @@ def register(request):
     elif request.method == 'POST':
         #print(request.POST['indicativo'])
         if(register_validation(request.POST)):
-            try:
-                check = radioaficionados.objects.get(indicativo=request.POST['indicativoR']).indicativo
-            except:
-                check = None
+            tempInd = request.POST['indicativoR']
+            temppass = request.POST['contrasenaR']
+            tempname = request.POST['nombreR']
+            temppat = request.POST['apellidoPR']
+            tempmat = request.POST['apellidoMR']
+            tempmun = request.POST['municipioR']
+            tempestado = request.POST['estadoR']
+            flagVal = True
+
+            if any(not c.isalnum() for c in tempInd) or (len(tempInd) < 4):
+                messages.info(request,"Indicativo erroneo")
+                flagVal = False
             
-            if(check == None):
-                new_rad = radioaficionados()
-                new_rad.indicativo = request.POST['indicativoR']
-                new_rad.password = request.POST['contrasenaR']
-                new_rad.nombre = request.POST['nombreR']
-                new_rad.apellidoP = request.POST['apellidoPR']
-                new_rad.apellidoM = request.POST['apellidoMR']
-                new_rad.municipio = request.POST['municipioR']
-                new_rad.estado = request.POST['estadoR']
-                new_rad.save()
-                nuser = User.objects.create_user(new_rad.indicativo, '', new_rad.password)
-                nuser.last_name = "{} {}".format(new_rad.nombre,new_rad.apellidoP)
-                nuser.save()
-                messages.success(request,'Usuario ' + new_rad.indicativo +' creado')
-            else:
-                messages.success(request,'Indicativo ' + request.POST['indicativoR'] +' ocupado.')
+            if len(temppass) < 5:
+                messages.info(request,"Contraseña invalida, se requiere una de mayor longitud")
+                flagVal = False
+
+            if any(not c.isalnum() for c in tempname):
+                messages.info(request,"Nombre erroneo")
+                flagVal = False
+            if any(not c.isalnum() for c in temppat):
+                messages.info(request,"Apellido Paterno erroneo")
+                flagVal = False
+            if any(not c.isalnum() for c in tempmat):
+                messages.info(request,"Apellido Materno erroneo")
+                flagVal = False
+            
+            if any(not c.isalnum() for c in tempmun):
+                messages.info(request,"Municipio erroneo")
+                flagVal = False
+            if any(not c.isalnum() for c in tempestado):
+                messages.info(request,"Estado erroneo")
+                flagVal = False 
+
+            if flagVal == True:
+                
+                try:
+                    check = radioaficionados.objects.get(indicativo=request.POST['indicativoR']).indicativo
+                except:
+                    check = None
+                
+                if(check == None):
+                    new_rad = radioaficionados()
+                    new_rad.indicativo = request.POST['indicativoR']
+                    new_rad.password = request.POST['contrasenaR']
+                    new_rad.nombre = request.POST['nombreR']
+                    new_rad.apellidoP = request.POST['apellidoPR']
+                    new_rad.apellidoM = request.POST['apellidoMR']
+                    new_rad.municipio = request.POST['municipioR']
+                    new_rad.estado = request.POST['estadoR']
+                    new_rad.save()
+                    nuser = User.objects.create_user(new_rad.indicativo, '', new_rad.password)
+                    nuser.last_name = "{} {}".format(new_rad.nombre,new_rad.apellidoP)
+                    nuser.save()
+                    messages.success(request,'Usuario ' + new_rad.indicativo +' creado')
+                else:
+                    messages.success(request,'Indicativo ' + request.POST['indicativoR'] +' ocupado.')
 
             return redirect('index')
 
