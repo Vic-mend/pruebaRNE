@@ -186,10 +186,17 @@
               
             </select>
           </div>
+          {% if indestacion.0.ganancia == 0 %} 
+          <div class="mb-0">
+            <label for="ganancia" class="col-form-label">Ganancia [dBi]: (opcional)</label>
+            <input type="number" class="form-control" id="ganancia" name="ganancia" placeholder="Ej: 20" >
+          </div>
+          {% else %}
           <div class="mb-0">
             <label for="ganancia" class="col-form-label">Ganancia [dBi]: (opcional)</label>
             <input type="number" class="form-control" id="ganancia" name="ganancia" placeholder="Ej: 20" value="{{indestacion.0.ganancia}}">
           </div>
+          {% endif %}
           <div class="mb-0">
             <label for="polarizacion" class="col-form-label">Polarización:</label>
             <input type="text" class="form-control" id="polarizacion" name="polarizacion" placeholder="Ej: Circular" value="{{indestacion.0.polarizacion}}" maxlength="20" required>

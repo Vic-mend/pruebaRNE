@@ -37,7 +37,7 @@ class estaciones_terrenas(models.Model):
     modelo = models.CharField(max_length=40, blank=False)
     antena = models.CharField(max_length=30, blank=False)
     tipo_antena = models.CharField(max_length=20 ,blank=False)
-    ganancia = models.IntegerField(blank=True, null= True)
+    ganancia = models.IntegerField(blank=True)
     frecuencia = models.CharField(max_length=20, blank=False)
     polarizacion  = models.CharField(max_length=20, blank=False)
     altura = models.DecimalField(max_digits=7, decimal_places=4, blank=False)

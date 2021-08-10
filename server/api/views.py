@@ -300,7 +300,7 @@ def estacionTerrenaUpdate(request, indestacion):
 
         
         if not request.POST['ganancia']:
-            gan = None
+            gan = 0
         else:
             gan = int(request.POST['ganancia'])
 
