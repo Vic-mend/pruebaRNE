@@ -298,13 +298,19 @@ def estacionTerrenaUpdate(request, indestacion):
         else:
             modulacion = request.POST['formato']
 
+        
+        if not request.POST['ganancia']:
+            gan = None
+        else:
+            gan = int(request.POST['ganancia'])
+
         estaciones_terrenas.objects.filter(indicativo=usr, nombre_estacion = indestacion).update(
             nombre_estacion = request.POST['nombre'], 
             marca = request.POST['marca'],
             grid = request.POST['grid'],
             antena = request.POST['antena'],
             tipo_antena = request.POST['tipo'],
-            ganancia = request.POST['ganancia'],
+            ganancia = gan,
             polarizacion = request.POST['polarizacion'],
             altura = request.POST['altura'],
             modulacion = modulacion,
