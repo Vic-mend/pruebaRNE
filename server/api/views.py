@@ -94,12 +94,7 @@ def register(request):
                 messages.info(request,"Apellido Materno erroneo")
                 flagVal = False
             
-            if any(not c.isalnum() for c in tempmun):
-                messages.info(request,"Municipio erroneo")
-                flagVal = False
-            if any(not c.isalnum() for c in tempestado):
-                messages.info(request,"Estado erroneo")
-                flagVal = False 
+           
 
             if flagVal == True:
                 
@@ -117,10 +112,12 @@ def register(request):
                     new_rad.apellidoM = request.POST['apellidoMR']
                     new_rad.municipio = request.POST['municipioR']
                     new_rad.estado = request.POST['estadoR']
-                    new_rad.save()
+                    
                     nuser = User.objects.create_user(new_rad.indicativo, '', new_rad.password)
                     nuser.last_name = "{} {}".format(new_rad.nombre,new_rad.apellidoP)
                     nuser.save()
+                    new_rad.password = 'No data'
+                    new_rad.save()
                     messages.success(request,'Usuario ' + new_rad.indicativo +' creado')
                 else:
                     messages.success(request,'Indicativo ' + request.POST['indicativoR'] +' ocupado.')
