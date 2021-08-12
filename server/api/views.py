@@ -11,13 +11,25 @@ from itertools import islice
 #import pandas as pd
 import csv
 
-from .formvalidations import estaciones_validacion, login_validation, register_validation
+from .formvalidations import *
 
 from django.contrib.auth.decorators import login_required
 from .decorators import unauthenticated_user, allowed_users
 
 from .helpfunctions import concatpass,ft_object
 import time
+
+from django import template
+from django.contrib.auth.models import Group
+
+register = template.Library() 
+
+@register.filter(name='has_group')
+def has_group(user, group_name):
+    group = Group.objects.get(name=group_name)
+    return True if group in user.groups.all() else False
+
+
 # Create your views here.
 @unauthenticated_user
 def loginUsr(request):
@@ -126,21 +138,53 @@ def register(request):
 
 @login_required(login_url='index')
 def home(request):
-    return render(request, "home.html")
+    usr2 = request.user.groups.filter(name='analistas').exists()
+    context={'grup': usr2}
+    return render(request, "home.html", context)
 
 @login_required(login_url='index')
 def estacionTerrena(request):
-    return render(request, "estacionTerrena.html")
+    usr2 = request.user.groups.filter(name='analistas').exists()
+    context={'grup': usr2}
+    return render(request, "estacionTerrena.html",context)
 
 @login_required(login_url='index')
 def reportes(request):
-    return render(request, "reportes.html")
+    usr2 = request.user.groups.filter(name='analistas').exists()
+    context={'grup': usr2}
+    return render(request, "reportes.html",context)
 
 @login_required(login_url='index')
 def logoutUser(request):
     logout(request)
     return redirect("index")
 
+@allowed_users(allowed_roles = ['analistas'])
+@login_required(login_url='index')
+def download(request):
+    usr2 = request.user.groups.filter(name='analistas').exists()
+    context={'grup': usr2}
+    if request.method=="GET":
+        return render(request,"downloads.html",context)
+    elif request.method=="POST":
+        if (date_validation(request.POST)):
+            date1 = request.POST['date1']
+            date2 = request.POST['date2']
+
+            bitacorasQ = bitacoras.objects.filter(fecha__range=[date1,date2]).values_list('fecha', 'hora', 'mensaje1', 'mensaje2', 'modo', 'freq', 'mensaje3', 'indicativo_id', 'nombre_estacion', 'db', 'dt', 'freq_tx', 'rt')
+           
+            if not bitacorasQ:
+                context = {'grup': usr2,'warning' : 'Al parecer no existen datos con estas fechas, intenta con otras fechas.'}
+                return render(request,"downloads.html",context)
+            else:
+                response = HttpResponse(content_type='text/csv')
+                response['Content-Disposition'] = 'attachment; filename="bitacoras.csv"'
+                writer = csv.writer(response)
+                writer.writerow(['Fecha', 'Hora', 'Mensaje 1', 'Mensaje 2', 'Modo', 'Frecuencia', 'Mensaje 3', 'Indicativo Id', 'Nombre Estacion', 'DB', 'DT', 'Frecuencia TX', 'RT'])
+                for bitacora in bitacorasQ:
+                    writer.writerow(bitacora)
+                return response
+    
 def csvhandler(request):
     data = {}
     if "GET" == request.method:
@@ -219,15 +263,15 @@ def csvhandler(request):
     
     return HttpResponse('Hecho')
         
-
 def estacionTerrena(request):
     usr = radioaficionados(request.user)
     tus_estaciones = estaciones_terrenas.objects.filter(indicativo=usr)
-    context= {'estaciones' : tus_estaciones}
+    usr2 = request.user.groups.filter(name='analistas').exists()
+    context= {'estaciones' : tus_estaciones, 'grup': usr2}
     indestacion = None
     if request.method == 'GET':
         tus_estaciones = estaciones_terrenas.objects.filter(indicativo=usr)
-        context= {'estaciones' : tus_estaciones, 'indestacion':indestacion}
+        context= {'estaciones' : tus_estaciones, 'indestacion':indestacion, 'grup': usr2}
     elif request.method == 'POST':
         if(estaciones_validacion(request.POST)):
             new_est = estaciones_terrenas()
@@ -253,19 +297,20 @@ def estacionTerrena(request):
             new_est.indicativo = usr
             new_est.save()
         tus_estaciones = estaciones_terrenas.objects.filter(indicativo=usr)
-        context= {'estaciones' : tus_estaciones, 'indestacion':indestacion}
+        context= {'estaciones' : tus_estaciones, 'indestacion':indestacion, 'grup': usr2}
     return render(request,"estacionTerrena.html",context)
 
 def estacionTerrena2(request,indestacion):
     usr = radioaficionados(request.user)
+    usr2 = request.user.groups.filter(name='analistas').exists()
     tus_estaciones = estaciones_terrenas.objects.filter(indicativo=usr)
     ind_est = estaciones_terrenas.objects.filter(indicativo=usr, nombre_estacion = indestacion)
 
     #context= {'estaciones' : tus_estaciones}
     if tus_estaciones and not ind_est == None:
-        context= {'estaciones' : tus_estaciones, 'indestacion':ind_est}
+        context= {'estaciones' : tus_estaciones, 'indestacion':ind_est, 'grup': usr2}
     else:
-        context= {'estaciones' : tus_estaciones, 'indestacion':None}
+        context= {'estaciones' : tus_estaciones, 'indestacion':None, 'grup': usr2}
     
     # if(indestacion == 'nueva'):
     #     return render(request,"estacionTerrena.html",context)
@@ -276,9 +321,10 @@ def estacionTerrena2(request,indestacion):
 
 def estacionTerrenaDelete(request, idT):
     usr = radioaficionados(request.user)
+    usr2 = request.user.groups.filter(name='analistas').exists()
     tus_estaciones = estaciones_terrenas.objects.filter(indicativo=usr)
     indestacion = None
-    context= {'estaciones' : tus_estaciones, 'indestacion':indestacion}
+    context= {'estaciones' : tus_estaciones, 'indestacion':indestacion, 'grup': usr2}
 
     # Que sea el dueño?
     estacion = estaciones_terrenas.objects.filter(id=idT)
@@ -318,30 +364,35 @@ def estacionTerrenaUpdate(request, indestacion):
 def pruebaestaciones(request,indestacion):
     #print(indestacion)
     usr = radioaficionados(request.user)
+    usr2 = request.user.groups.filter(name='analistas').exists()
+
     tus_estaciones = estaciones_terrenas.objects.filter(indicativo=usr)
     ind_est = estaciones_terrenas.objects.filter(indicativo=usr, nombre_estacion = indestacion)
     
     if tus_estaciones and not ind_est == None :
         
-        context= {'estaciones' : tus_estaciones, 'indestacion':ind_est}
+        context= {'estaciones' : tus_estaciones, 'indestacion':ind_est, 'grup': usr2}
     else:
-        context= {'estaciones' : tus_estaciones, 'indestacion':None}
+        context= {'estaciones' : tus_estaciones, 'indestacion':None, 'grup': usr2}
 
     return render(request,"pruebalista.html",context)#checar
 
 def pruebaestaciones2(request):
     usr = radioaficionados(request.user)
+    usr2 = request.user.groups.filter(name='analistas').exists()
     indestacion = None
     
     tus_estaciones = estaciones_terrenas.objects.filter(indicativo=usr)
-    context= {'estaciones' : tus_estaciones, 'indestacion':indestacion}
+    context= {'estaciones' : tus_estaciones, 'indestacion':indestacion, 'grup': usr2}
 
     return render(request,"pruebalista.html",context)#checar
 
 def reportes(request):
     usr = radioaficionados(request.user)
     tus_estaciones = estaciones_terrenas.objects.filter(indicativo=usr)
-    context= {'estaciones' : tus_estaciones, 'uploadFlag': False}
+    usr2 = request.user.groups.filter(name='analistas').exists()
+
+    context= {'estaciones' : tus_estaciones, 'uploadFlag': False, 'grup': usr2}
     
     print(" Variable usr ",usr)
     print(" Variable usr.indicativo ",usr.indicativo)
@@ -350,7 +401,7 @@ def reportes(request):
         #return render(request, "csvform.html")
         
         reports = bitacoras.objects.filter(indicativo=usr).order_by('id').reverse()[:100]
-        context= {'estaciones' : tus_estaciones, 'uploadFlag': False, 'reports': reports}    
+        context= {'estaciones' : tus_estaciones, 'uploadFlag': False, 'reports': reports, 'grup': usr2}   
 
         return render(request, "reportes.html",context)
     # if not GET, then proceed
@@ -433,7 +484,7 @@ def reportes(request):
         messages.info(request,"Completado")
 
         reports = bitacoras.objects.filter(indicativo=usr).order_by('id').reverse()[:100]
-        context= {'estaciones' : tus_estaciones, 'uploadFlag': True, 'reports': reports}    
+        context= {'estaciones' : tus_estaciones, 'uploadFlag': True, 'reports': reports, 'grup': usr2}     
 
         return render(request, "reportes.html",context)
 
@@ -441,9 +492,10 @@ def handleComments(request):
     usr = radioaficionados(request.user)
     radioa =radioaficionados.objects.get(indicativo=usr.indicativo)
     tus_estaciones = estaciones_terrenas.objects.filter(indicativo=usr)
+    usr2 = request.user.groups.filter(name='analistas').exists()
 
     reports = bitacoras.objects.filter(indicativo=usr).order_by('id').reverse()[:100]
-    context= {'estaciones' : tus_estaciones, 'uploadFlag': False, 'reports': reports} 
+    context= {'estaciones' : tus_estaciones, 'uploadFlag': False, 'reports': reports, 'grup': usr2}   
 
     print(request.POST['areacomment'])
     try:
@@ -455,3 +507,4 @@ def handleComments(request):
             #logging.getLogger("error_logger").error("Unable to upload file. "+repr(e))
             messages.error(request,"Error al guardar comentario, intentalo más tarde. "+repr(e))
     return render(request, "reportes.html",context)
+

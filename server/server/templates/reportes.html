@@ -1,11 +1,14 @@
 {% extends "template.html" %}
 
 {% block content %}
-  <div>
+  {%if messages %}
+  <div class="alert alert-info d-flex justify-content-center" role="alert">
       {% for message in messages %}
               <span id="message"> {{message}} </span>
       {% endfor %}
   </div>
+  {%endif%}
+  
   <div class="container p-3 mt-3 border rounded" style="border-width: 2px!important;">
     <form id="reporte" name="reporte" action="{% url 'reportes' %}" method="POST" onsubmit="return handleSubir()" enctype="multipart/form-data" novalidate  style="display: flex; flex-wrap: wrap; justify-content: space-evenly;">
       {% csrf_token %}

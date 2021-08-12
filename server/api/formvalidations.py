@@ -34,3 +34,10 @@ def register_validation(values):
   if(len(values['municipioR']) > 100 or len(values['municipioR']) < 1 ): val=False
 
   return val
+
+def date_validation(values):
+  val = True
+  if(len(values['date1']) < 1 ): val=False
+  if(len(values['date2']) < 1 ): val=False
+
+  return val

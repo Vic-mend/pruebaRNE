@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import *
-
+from django.conf.urls import url
 
 from .views import pruebaestaciones,pruebaestaciones2
 urlpatterns = [
@@ -20,5 +20,5 @@ urlpatterns = [
     path('pestacion/<str:indestacion>/', pruebaestaciones, name="pestacionnum"),
     path('reportes/', reportes, name="reportes"),
     path('commentary/', handleComments, name="handleComments"),
-    
+    path('download/', download, name="download"),
 ]
