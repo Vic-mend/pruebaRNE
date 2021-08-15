@@ -1,7 +1,7 @@
 from django.db.models.fields import NullBooleanField
 from django.shortcuts import redirect, render
 from django.http import HttpResponse
-from .models import radioaficionados , estaciones_terrenas ,bitacoras, comentarios
+from .models import radioaficionados , estaciones_terrenas ,bitacoras, comentarios, mensajeadmin
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
@@ -140,18 +140,26 @@ def register(request):
 def home(request):
     usr2 = request.user.groups.filter(name='analistas').exists()
     context={'grup': usr2}
+    flagadmin = request.user.groups.filter(name='administrators').exists()
+    context['adpriv']= flagadmin
+    msgsadmin = mensajeadmin.objects.all()
+    context['msgsadmin']= msgsadmin
     return render(request, "home.html", context)
 
 @login_required(login_url='index')
 def estacionTerrena(request):
     usr2 = request.user.groups.filter(name='analistas').exists()
     context={'grup': usr2}
+    flagadmin = request.user.groups.filter(name='administrators').exists()
+    context['adpriv']= flagadmin
     return render(request, "estacionTerrena.html",context)
 
 @login_required(login_url='index')
 def reportes(request):
     usr2 = request.user.groups.filter(name='analistas').exists()
     context={'grup': usr2}
+    flagadmin = request.user.groups.filter(name='administrators').exists()
+    context['adpriv']= flagadmin
     return render(request, "reportes.html",context)
 
 @login_required(login_url='index')
@@ -164,6 +172,8 @@ def logoutUser(request):
 def download(request):
     usr2 = request.user.groups.filter(name='analistas').exists()
     context={'grup': usr2}
+    flagadmin = request.user.groups.filter(name='administrators').exists()
+    context['adpriv']= flagadmin
     if request.method=="GET":
         return render(request,"downloads.html",context)
     elif request.method=="POST":
@@ -268,6 +278,9 @@ def estacionTerrena(request):
     tus_estaciones = estaciones_terrenas.objects.filter(indicativo=usr)
     usr2 = request.user.groups.filter(name='analistas').exists()
     context= {'estaciones' : tus_estaciones, 'grup': usr2}
+    flagadmin = request.user.groups.filter(name='administrators').exists()
+    
+    print("Esto esta en flagadmin " , flagadmin)
     indestacion = None
     if request.method == 'GET':
         tus_estaciones = estaciones_terrenas.objects.filter(indicativo=usr)
@@ -298,19 +311,23 @@ def estacionTerrena(request):
             new_est.save()
         tus_estaciones = estaciones_terrenas.objects.filter(indicativo=usr)
         context= {'estaciones' : tus_estaciones, 'indestacion':indestacion, 'grup': usr2}
+        context['adpriv']= flagadmin
     return render(request,"estacionTerrena.html",context)
 
 def estacionTerrena2(request,indestacion):
     usr = radioaficionados(request.user)
     usr2 = request.user.groups.filter(name='analistas').exists()
+    flagadmin = request.user.groups.filter(name='administrators').exists()
     tus_estaciones = estaciones_terrenas.objects.filter(indicativo=usr)
     ind_est = estaciones_terrenas.objects.filter(indicativo=usr, nombre_estacion = indestacion)
 
     #context= {'estaciones' : tus_estaciones}
     if tus_estaciones and not ind_est == None:
         context= {'estaciones' : tus_estaciones, 'indestacion':ind_est, 'grup': usr2}
+        
     else:
         context= {'estaciones' : tus_estaciones, 'indestacion':None, 'grup': usr2}
+    context['adpriv']= flagadmin
     
     # if(indestacion == 'nueva'):
     #     return render(request,"estacionTerrena.html",context)
@@ -322,10 +339,12 @@ def estacionTerrena2(request,indestacion):
 def estacionTerrenaDelete(request, idT):
     usr = radioaficionados(request.user)
     usr2 = request.user.groups.filter(name='analistas').exists()
+    flagadmin = request.user.groups.filter(name='administrators').exists()
+    
     tus_estaciones = estaciones_terrenas.objects.filter(indicativo=usr)
     indestacion = None
     context= {'estaciones' : tus_estaciones, 'indestacion':indestacion, 'grup': usr2}
-
+    context['adpriv']= flagadmin
     # Que sea el dueño?
     estacion = estaciones_terrenas.objects.filter(id=idT)
     estacion.delete()
@@ -365,6 +384,8 @@ def pruebaestaciones(request,indestacion):
     #print(indestacion)
     usr = radioaficionados(request.user)
     usr2 = request.user.groups.filter(name='analistas').exists()
+    flagadmin = request.user.groups.filter(name='administrators').exists()
+    
 
     tus_estaciones = estaciones_terrenas.objects.filter(indicativo=usr)
     ind_est = estaciones_terrenas.objects.filter(indicativo=usr, nombre_estacion = indestacion)
@@ -375,16 +396,18 @@ def pruebaestaciones(request,indestacion):
     else:
         context= {'estaciones' : tus_estaciones, 'indestacion':None, 'grup': usr2}
 
+    context['adpriv']= flagadmin
     return render(request,"pruebalista.html",context)#checar
 
 def pruebaestaciones2(request):
     usr = radioaficionados(request.user)
     usr2 = request.user.groups.filter(name='analistas').exists()
     indestacion = None
+    flagadmin = request.user.groups.filter(name='administrators').exists()
     
     tus_estaciones = estaciones_terrenas.objects.filter(indicativo=usr)
     context= {'estaciones' : tus_estaciones, 'indestacion':indestacion, 'grup': usr2}
-
+    context['adpriv']= flagadmin
     return render(request,"pruebalista.html",context)#checar
 
 def reportes(request):
@@ -393,6 +416,7 @@ def reportes(request):
     usr2 = request.user.groups.filter(name='analistas').exists()
 
     context= {'estaciones' : tus_estaciones, 'uploadFlag': False, 'grup': usr2}
+    flagadmin = request.user.groups.filter(name='administrators').exists()
     
     print(" Variable usr ",usr)
     print(" Variable usr.indicativo ",usr.indicativo)
@@ -485,7 +509,7 @@ def reportes(request):
 
         reports = bitacoras.objects.filter(indicativo=usr).order_by('id').reverse()[:100]
         context= {'estaciones' : tus_estaciones, 'uploadFlag': True, 'reports': reports, 'grup': usr2}     
-
+        context['adpriv']= flagadmin
         return render(request, "reportes.html",context)
 
 def handleComments(request):
@@ -496,7 +520,8 @@ def handleComments(request):
 
     reports = bitacoras.objects.filter(indicativo=usr).order_by('id').reverse()[:100]
     context= {'estaciones' : tus_estaciones, 'uploadFlag': False, 'reports': reports, 'grup': usr2}   
-
+    flagadmin = request.user.groups.filter(name='administrators').exists()
+    context['adpriv']= flagadmin
     print(request.POST['areacomment'])
     try:
         
@@ -507,4 +532,23 @@ def handleComments(request):
             #logging.getLogger("error_logger").error("Unable to upload file. "+repr(e))
             messages.error(request,"Error al guardar comentario, intentalo más tarde. "+repr(e))
     return render(request, "reportes.html",context)
+
+
+@allowed_users(allowed_roles = ['administrators'])
+@login_required(login_url='index')
+def msgAdmin(request): 
+    if request.method=="POST":
+        newmsg = mensajeadmin()
+        newmsg.cuerpoMsg = request.POST['msgbody']
+        newmsg.save()
+    msgs = mensajeadmin.objects.all()
+    context = {"mensajesadmin": msgs}
+    return render(request,"mensajesadmin.html",context)
+
+@allowed_users(allowed_roles = ['administrators'])
+@login_required(login_url='index')
+def deletemsg(request,pk):
+    mensajeadmin.objects.filter(id=pk).delete()
+    return redirect('/mensajes/')
+        
 

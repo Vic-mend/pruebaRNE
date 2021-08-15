@@ -21,4 +21,6 @@ urlpatterns = [
     path('reportes/', reportes, name="reportes"),
     path('commentary/', handleComments, name="handleComments"),
     path('download/', download, name="download"),
+    path('mensajes/', msgAdmin, name="mensajesAdmin"),
+    path('deletemsg/<str:pk>/', deletemsg, name="deletemsg"),
 ]

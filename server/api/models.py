@@ -47,3 +47,6 @@ class estaciones_terrenas(models.Model):
 class comentarios(models.Model):
     indicativo = models.ForeignKey(radioaficionados, on_delete=models.CASCADE)
     comentario = models.CharField(max_length=600, blank=False)
+
+class mensajeadmin(models.Model):
+    cuerpoMsg = models.CharField(max_length=600, blank=False)

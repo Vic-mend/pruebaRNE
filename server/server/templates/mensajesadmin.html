@@ -1,0 +1,88 @@
+{% extends "template.html" %}
+
+
+{% block content %}
+    {%if warning %}
+    <div id="warning-alert"class="alert alert-warning d-flex justify-content-center" role="alert">
+                <span id="message"> {{warning}} </span>
+    </div>
+    {%endif%}
+
+    <div class="container" style="padding-top: 2%;">
+        <div class="row">
+            <div class="col-sm">
+              
+            </div>
+            <div class="col-sm">
+              
+            </div>
+            <div class="col-sm">
+                <div>
+                    <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#registerModal" id="registro">Añadir un nuevo mensaje</button>
+                
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-sm">
+              
+            </div>
+            <div class="col-sm">
+                <div>
+                    <table border="2">
+                        <thead>
+                            <tr>
+                                <th> Id </th>
+                                <th> Mensaje </th>
+                                <th> Eliminar </th>
+                                
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for msj in mensajesadmin %}
+                            <tr>
+                                <td>{{msj.id}}</td>
+                                <td>{{msj.cuerpoMsg}} </td>
+                                <td><a class="btn btn-danger" href="{%url 'deletemsg' msj.id%}" role="button">Eliminar</a></td>
+                                
+                                
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                        </table>
+                
+                </div>
+            </div>
+            <div class="col-sm">
+              
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+<div class="modal fade show modBack" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header" style="padding: .5rem 1rem!important;">
+          <h5 class="modal-title" id="exampleModalLabel">Nuevo Mensaje</h5>
+        </div>
+        <div class="modal-body pt-0">
+            <form id="newmsg" name="newmsg" action="" method="POST" >
+            {% csrf_token %}
+            <textarea class="form-control" id="msgbody" name="msgbody" rows="3"></textarea>
+                <button type="submit"> Agregar Mensaje </button>
+            </form>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+
+  {% endblock %}

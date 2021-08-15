@@ -40,6 +40,12 @@
               <a class="nav-link text-white" href="{% url 'download' %}">Descarga</a>
             </li>
           {%endif%}
+          {% if adpriv %}
+            <li class="nav-item  active mr-3 ml-3">
+              <a class="nav-link text-white" href="{% url 'mensajesAdmin' %}">Mensajes</a>
+            </li>
+          {%endif%}
+          
         </ul>
       </div>
       

@@ -44,7 +44,11 @@
   }
 </style>
   <div class="alert alert-primary alrt" role="alert">
-    <MARQUEE WIDTH=100% > Próximo experimento dentro de 24 hrs. </MARQUEE>
+    <MARQUEE WIDTH=100% >
+      {% for msg in msgsadmin %}  
+        <span> {{msg.cuerpoMsg}} &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp</span>
+      {% endfor %}
+    </MARQUEE>
   </div>
   
   <div class="image">
