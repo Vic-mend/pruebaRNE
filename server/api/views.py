@@ -176,6 +176,7 @@ def download(request):
                 return response
     
 # ------------------------------------------> Upload CSV Handler
+@login_required(login_url='index')
 def csvhandler(request):
     data = {}
     if "GET" == request.method:
@@ -256,6 +257,7 @@ def csvhandler(request):
 
 
 # ------------------------------------------> Get and create a new ground station
+@login_required(login_url='index')
 def estacionTerrena(request):
     usr = radioaficionados(request.user)
     tus_estaciones = estaciones_terrenas.objects.filter(indicativo=usr)
@@ -303,6 +305,7 @@ def estacionTerrena(request):
 
 
 # ------------------------------------------> Get a ground station by its id
+@login_required(login_url='index')
 def estacionTerrena2(request,indestacion):
     usr = radioaficionados(request.user)
     usr2 = request.user.groups.filter(name='analistas').exists()
@@ -327,6 +330,7 @@ def estacionTerrena2(request,indestacion):
 
 
 # ------------------------------------------> Delete a ground station by its id
+@login_required(login_url='index')
 def estacionTerrenaDelete(request, idT):
     usr = radioaficionados(request.user)
     usr2 = request.user.groups.filter(name='analistas').exists()
@@ -343,6 +347,7 @@ def estacionTerrenaDelete(request, idT):
     return redirect('/estacionterrena/', context)
 
 # ------------------------------------------> Update a ground station by its id
+@login_required(login_url='index')
 def estacionTerrenaUpdate(request, indestacion):
     usr = radioaficionados(request.user)
 
@@ -374,6 +379,7 @@ def estacionTerrenaUpdate(request, indestacion):
 
 
 # ------------------------------------------>TEst functions for get ground stations
+@login_required(login_url='index')
 def pruebaestaciones(request,indestacion):
     #print(indestacion)
     usr = radioaficionados(request.user)
@@ -393,6 +399,7 @@ def pruebaestaciones(request,indestacion):
     context['adpriv']= flagadmin
     return render(request,"pruebalista.html",context)#checar
 
+@login_required(login_url='index')
 def pruebaestaciones2(request):
     usr = radioaficionados(request.user)
     usr2 = request.user.groups.filter(name='analistas').exists()
@@ -406,6 +413,7 @@ def pruebaestaciones2(request):
 
 
 # ------------------------------------------> Upload a FT8 Report
+@login_required(login_url='index')
 def reportes(request):
     usr = radioaficionados(request.user)
     tus_estaciones = estaciones_terrenas.objects.filter(indicativo=usr)
@@ -510,6 +518,7 @@ def reportes(request):
         return render(request, "reportes.html",context)
 
 # ------------------------------------------> Handle comments after upload an FT8 report
+@login_required(login_url='index')
 def handleComments(request):
     usr = radioaficionados(request.user)
     radioa =radioaficionados.objects.get(indicativo=usr.indicativo)
