@@ -30,7 +30,7 @@ def has_group(user, group_name):
     return True if group in user.groups.all() else False
 
 
-# Create your views here.
+# --------------------------> LOGIN
 @unauthenticated_user
 def loginUsr(request):
     if request.method == 'POST':
@@ -41,22 +41,13 @@ def loginUsr(request):
 
             if usr_rad is not None:
                 login(request,usr_rad)
-                #return HttpResponse('LogIn exitoso')
                 return redirect("home")
             else: 
                 messages.info(request,'Datos erroneos')
-            #return HttpResponse('Datos erroneos')
-        """if radioaficionados.objects.filter(indicativo = request.POST['indicativoL']).exists():
-            tolog = radioaficionados.objects.get(indicativo = request.POST['indicativoL'])
-            if tolog.password == request.POST['contrasenaL']:          
-                return HttpResponse('LogIn exitoso')
-            else:
-                return HttpResponse('Datos erroneos')
-        else :
-            return HttpResponse('Indicativo equivocado')"""
-
     return render(request, "index.html")
 
+
+# ------------------------------------> Main = List of amateur radio
 @login_required(login_url='index')
 @allowed_users(allowed_roles = ['administrators'])
 def main(request):
@@ -72,6 +63,8 @@ def main(request):
     }
     return render(request,'radlist.html', context)
 
+
+# ------------------------------------> Register
 @unauthenticated_user
 def register(request):
     if request.method == 'GET':
@@ -106,8 +99,6 @@ def register(request):
                 messages.info(request,"Apellido Materno erroneo")
                 flagVal = False
             
-           
-
             if flagVal == True:
                 
                 try:
@@ -136,6 +127,8 @@ def register(request):
 
             return redirect('index')
 
+
+# ------------------------------------------> HOME
 @login_required(login_url='index')
 def home(request):
     usr2 = request.user.groups.filter(name='analistas').exists()
@@ -146,27 +139,14 @@ def home(request):
     context['msgsadmin']= msgsadmin
     return render(request, "home.html", context)
 
-@login_required(login_url='index')
-def estacionTerrena(request):
-    usr2 = request.user.groups.filter(name='analistas').exists()
-    context={'grup': usr2}
-    flagadmin = request.user.groups.filter(name='administrators').exists()
-    context['adpriv']= flagadmin
-    return render(request, "estacionTerrena.html",context)
-
-@login_required(login_url='index')
-def reportes(request):
-    usr2 = request.user.groups.filter(name='analistas').exists()
-    context={'grup': usr2}
-    flagadmin = request.user.groups.filter(name='administrators').exists()
-    context['adpriv']= flagadmin
-    return render(request, "reportes.html",context)
-
+# ------------------------------------------> LOGOUT
 @login_required(login_url='index')
 def logoutUser(request):
     logout(request)
     return redirect("index")
 
+
+# ------------------------------------------> Download data
 @allowed_users(allowed_roles = ['analistas'])
 @login_required(login_url='index')
 def download(request):
@@ -195,6 +175,7 @@ def download(request):
                     writer.writerow(bitacora)
                 return response
     
+# ------------------------------------------> Upload CSV Handler
 def csvhandler(request):
     data = {}
     if "GET" == request.method:
@@ -272,7 +253,9 @@ def csvhandler(request):
         messages.error(request,"Unable to upload file. "+repr(e))
     
     return HttpResponse('Hecho')
-        
+
+
+# ------------------------------------------> Get and create a new ground station
 def estacionTerrena(request):
     usr = radioaficionados(request.user)
     tus_estaciones = estaciones_terrenas.objects.filter(indicativo=usr)
@@ -280,11 +263,12 @@ def estacionTerrena(request):
     context= {'estaciones' : tus_estaciones, 'grup': usr2}
     flagadmin = request.user.groups.filter(name='administrators').exists()
     
-    print("Esto esta en flagadmin " , flagadmin)
+    
     indestacion = None
     if request.method == 'GET':
         tus_estaciones = estaciones_terrenas.objects.filter(indicativo=usr)
         context= {'estaciones' : tus_estaciones, 'indestacion':indestacion, 'grup': usr2}
+        
     elif request.method == 'POST':
         if(estaciones_validacion(request.POST)):
             new_est = estaciones_terrenas()
@@ -311,9 +295,14 @@ def estacionTerrena(request):
             new_est.save()
         tus_estaciones = estaciones_terrenas.objects.filter(indicativo=usr)
         context= {'estaciones' : tus_estaciones, 'indestacion':indestacion, 'grup': usr2}
-        context['adpriv']= flagadmin
+    context['adpriv']= flagadmin
+        
+    print('esto esta en context', context)
+    
     return render(request,"estacionTerrena.html",context)
 
+
+# ------------------------------------------> Get a ground station by its id
 def estacionTerrena2(request,indestacion):
     usr = radioaficionados(request.user)
     usr2 = request.user.groups.filter(name='analistas').exists()
@@ -336,6 +325,8 @@ def estacionTerrena2(request,indestacion):
     # return render(request, "estacionTerrena", context)
     return render(request,"estacionTerrena.html",context)
 
+
+# ------------------------------------------> Delete a ground station by its id
 def estacionTerrenaDelete(request, idT):
     usr = radioaficionados(request.user)
     usr2 = request.user.groups.filter(name='analistas').exists()
@@ -351,6 +342,7 @@ def estacionTerrenaDelete(request, idT):
     
     return redirect('/estacionterrena/', context)
 
+# ------------------------------------------> Update a ground station by its id
 def estacionTerrenaUpdate(request, indestacion):
     usr = radioaficionados(request.user)
 
@@ -380,6 +372,8 @@ def estacionTerrenaUpdate(request, indestacion):
 
     return HttpResponseRedirect("/estacionterrena/{indestacion}/".format(indestacion= request.POST['nombre']))
 
+
+# ------------------------------------------>TEst functions for get ground stations
 def pruebaestaciones(request,indestacion):
     #print(indestacion)
     usr = radioaficionados(request.user)
@@ -410,6 +404,8 @@ def pruebaestaciones2(request):
     context['adpriv']= flagadmin
     return render(request,"pruebalista.html",context)#checar
 
+
+# ------------------------------------------> Upload a FT8 Report
 def reportes(request):
     usr = radioaficionados(request.user)
     tus_estaciones = estaciones_terrenas.objects.filter(indicativo=usr)
@@ -426,7 +422,7 @@ def reportes(request):
         
         reports = bitacoras.objects.filter(indicativo=usr).order_by('id').reverse()[:100]
         context= {'estaciones' : tus_estaciones, 'uploadFlag': False, 'reports': reports, 'grup': usr2}   
-
+        context['adpriv']= flagadmin
         return render(request, "reportes.html",context)
     # if not GET, then proceed
     elif request.method == 'POST':
@@ -510,8 +506,10 @@ def reportes(request):
         reports = bitacoras.objects.filter(indicativo=usr).order_by('id').reverse()[:100]
         context= {'estaciones' : tus_estaciones, 'uploadFlag': True, 'reports': reports, 'grup': usr2}     
         context['adpriv']= flagadmin
+        
         return render(request, "reportes.html",context)
 
+# ------------------------------------------> Handle comments after upload an FT8 report
 def handleComments(request):
     usr = radioaficionados(request.user)
     radioa =radioaficionados.objects.get(indicativo=usr.indicativo)
@@ -534,6 +532,7 @@ def handleComments(request):
     return render(request, "reportes.html",context)
 
 
+# ------------------------------------------> Handle the admin messages  page
 @allowed_users(allowed_roles = ['administrators'])
 @login_required(login_url='index')
 def msgAdmin(request): 
@@ -543,8 +542,11 @@ def msgAdmin(request):
         newmsg.save()
     msgs = mensajeadmin.objects.all()
     context = {"mensajesadmin": msgs}
+    context['adpriv']= True
     return render(request,"mensajesadmin.html",context)
 
+
+# ------------------------------------------> Delete an admin message  
 @allowed_users(allowed_roles = ['administrators'])
 @login_required(login_url='index')
 def deletemsg(request,pk):
