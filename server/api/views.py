@@ -70,15 +70,22 @@ def register(request):
     if request.method == 'GET':
         return redirect('index')
     elif request.method == 'POST':
-        #print(request.POST['indicativo'])
         if(register_validation(request.POST)):
             tempInd = request.POST['indicativoR']
             temppass = request.POST['contrasenaR']
             tempname = request.POST['nombreR']
             temppat = request.POST['apellidoPR']
             tempmat = request.POST['apellidoMR']
-            tempmun = request.POST['municipioR']
-            tempestado = request.POST['estadoR']
+            if request.POST['location'] == 'mexico':
+                temppais = 'Mexico'
+                tempmun = request.POST['municipioR']
+                tempestado = request.POST['estadoR']
+            else: 
+                temppais = request.POST['pais']
+                tempmun = request.POST['ciudad']
+                tempestado = request.POST['estado']
+            
+
             flagVal = True
 
             if any(not c.isalnum() for c in tempInd) or (len(tempInd) < 4):
@@ -98,6 +105,18 @@ def register(request):
             if any(not c.isalnum() for c in tempmat):
                 messages.info(request,"Apellido Materno erroneo")
                 flagVal = False
+
+            if request.POST['location'] == 'extranjero':
+                if not temppais.isalnum():
+                    messages.info(request,"Pais erroneo")
+                    flagVal = False
+                if not tempmun.isalnum():
+                    messages.info(request,"Ciudad erronea")
+                    flagVal = False
+                if not tempestado.isalnum():
+                    messages.info(request,"Estado erroneo")
+                    flagVal = False
+
             
             if flagVal == True:
                 
@@ -108,13 +127,14 @@ def register(request):
                 
                 if(check == None):
                     new_rad = radioaficionados()
-                    new_rad.indicativo = request.POST['indicativoR']
-                    new_rad.password = request.POST['contrasenaR']
-                    new_rad.nombre = request.POST['nombreR']
-                    new_rad.apellidoP = request.POST['apellidoPR']
-                    new_rad.apellidoM = request.POST['apellidoMR']
-                    new_rad.municipio = request.POST['municipioR']
-                    new_rad.estado = request.POST['estadoR']
+                    new_rad.indicativo = tempInd
+                    new_rad.password = temppass
+                    new_rad.nombre = tempname
+                    new_rad.apellidoP = temppat
+                    new_rad.apellidoM = tempmat
+                    new_rad.pais = temppais
+                    new_rad.municipio = tempmun
+                    new_rad.estado = tempestado
                     
                     nuser = User.objects.create_user(new_rad.indicativo, '', new_rad.password)
                     nuser.last_name = "{} {}".format(new_rad.nombre,new_rad.apellidoP)
@@ -545,12 +565,14 @@ def handleComments(request):
 @allowed_users(allowed_roles = ['administrators'])
 @login_required(login_url='index')
 def msgAdmin(request): 
+    usr2 = request.user.groups.filter(name='analistas').exists()
+
     if request.method=="POST":
         newmsg = mensajeadmin()
         newmsg.cuerpoMsg = request.POST['msgbody']
         newmsg.save()
     msgs = mensajeadmin.objects.all()
-    context = {"mensajesadmin": msgs}
+    context = {"mensajesadmin": msgs, "grup": usr2}
     context['adpriv']= True
     return render(request,"mensajesadmin.html",context)
 

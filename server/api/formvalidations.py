@@ -30,8 +30,13 @@ def register_validation(values):
   if(len(values['nombreR']) > 25 or len(values['nombreR']) < 1 ): val=False
   if(len(values['apellidoPR']) > 25 or len(values['apellidoPR']) < 1 ): val=False
   if(len(values['apellidoMR']) > 25 or len(values['apellidoMR']) < 1 ): val=False
-  if(len(values['estadoR']) > 30 or len(values['estadoR']) < 1 ): val=False
-  if(len(values['municipioR']) > 100 or len(values['municipioR']) < 1 ): val=False
+  if values['location'] == 'mexico':
+    if(len(values['estadoR']) > 30 or len(values['estadoR']) < 1 ): val=False
+    if(len(values['municipioR']) > 100 or len(values['municipioR']) < 1 ): val=False
+  else:
+    if(len(values['pais']) > 100 or len(values['pais']) < 1 ): val=False
+    if(len(values['estado']) > 30 or len(values['estado']) < 1 ): val=False
+    if(len(values['ciudad']) > 30 or len(values['ciudad']) < 1 ): val=False
 
   return val
 

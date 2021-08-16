@@ -11,6 +11,7 @@ class radioaficionados(models.Model):
     apellidoM = models.CharField(max_length=25, blank=False)
     municipio = models.CharField(max_length=30, blank=True)
     estado = models.CharField(max_length=30, blank=True)
+    pais = models.CharField(max_length=30, blank=True)
     password = models.CharField(max_length=100, blank=False)
     #USERNAME_FIELD = 'indicativo'
     #REQUIRED_FIELDS = [indicativo,password]

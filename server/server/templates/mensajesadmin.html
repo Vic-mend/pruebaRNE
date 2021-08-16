@@ -8,64 +8,34 @@
     </div>
     {%endif%}
 
-    <div class="container" style="padding-top: 2%;">
-        <div class="row">
-            <div class="col-sm">
-              
-            </div>
-            <div class="col-sm">
-              
-            </div>
-            <div class="col-sm">
-                <div>
-                    <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#registerModal" id="registro">Añadir un nuevo mensaje</button>
-                
-                </div>
-            </div>
+
+    <div class="container p-3 mt-3 border rounded" style="border-width: 2px!important; height: calc(100vh - 200px );">
+        <div class="col-sm d-flex justify-content-center mb-2">
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#registerModal" id="registro">+ Añadir un nuevo mensaje</button>
         </div>
-
-
-        <div class="row">
-            <div class="col-sm">
-              
-            </div>
-            <div class="col-sm">
-                <div>
-                    <table border="2">
-                        <thead>
-                            <tr>
-                                <th> Id </th>
-                                <th> Mensaje </th>
-                                <th> Eliminar </th>
-                                
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for msj in mensajesadmin %}
-                            <tr>
-                                <td>{{msj.id}}</td>
-                                <td>{{msj.cuerpoMsg}} </td>
-                                <td><a class="btn btn-danger" href="{%url 'deletemsg' msj.id%}" role="button">Eliminar</a></td>
-                                
-                                
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                        </table>
-                
-                </div>
-            </div>
-            <div class="col-sm">
-              
-            </div>
+        <div class="mt-3" style="position: relative; height: 55vh; overflow: auto; display: block;">
+          <table class="table table-bordered table-striped mb-0">
+            <thead>
+              <tr>
+                <th scope="col">Mensaje </th>
+                <th scope="col">Opcion</th>
+              </tr>
+            </thead>
+            <tbody>
+                {%if mensajesadmin %}
+                {% for msj in mensajesadmin %}
+                <tr>
+                    <td >{{msj.cuerpoMsg}} </td>
+                    <td><a class="btn btn-danger" href="{%url 'deletemsg' msj.id%}" role="button">Eliminar</a></td>
+                </tr>
+                {% endfor %}
+                {%else%}
+                <p style="text-align: center;" >Sin Mensajes nuevos, agrege uno nuevo</p>
+                {%endif%}
+            </tbody>
+          </table>
         </div>
-    </div>
-
-
-
-
-
-
+      </div>
 
 <div class="modal fade show modBack" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
