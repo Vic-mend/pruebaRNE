@@ -96,26 +96,9 @@ def register(request):
                 messages.info(request,"Contraseña invalida, se requiere una de mayor longitud")
                 flagVal = False
 
-            if any(not c.isalnum() for c in tempname):
-                messages.info(request,"Nombre erroneo")
-                flagVal = False
-            if any(not c.isalnum() for c in temppat):
-                messages.info(request,"Apellido Paterno erroneo")
-                flagVal = False
-            if any(not c.isalnum() for c in tempmat):
-                messages.info(request,"Apellido Materno erroneo")
-                flagVal = False
+           
 
-            if request.POST['location'] == 'extranjero':
-                if not temppais.isalnum():
-                    messages.info(request,"Pais erroneo")
-                    flagVal = False
-                if not tempmun.isalnum():
-                    messages.info(request,"Ciudad erronea")
-                    flagVal = False
-                if not tempestado.isalnum():
-                    messages.info(request,"Estado erroneo")
-                    flagVal = False
+            
 
             
             if flagVal == True:
