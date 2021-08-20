@@ -219,22 +219,56 @@ def csvhandler(request):
                 fields = line.split(" ")
                 fields = list(filter(None, fields))
                 cont+=1
+                print('Esto esta en el campo 4 ---->', fields[4])
+
                 try:
-                    
-                    ftlist.append(bitacoras(
-                        
-                        indicativo=radioa,
-                        fecha= "20{}-{}-{}".format(fields[0][0:2],fields[0][2:4],fields[0][4:6]),
-                        hora= "{}:{}:{}".format(fields[0][7:9],fields[0][9:11],fields[0][11:]),
-                        enlace= fields[1],
-                        rt = fields[2],
-                        estacion_rec= fields[3],
-                        grid= fields[5],
-                        freq = fields[6],
-                        modulacion = fields[7],
-                        reporte1 =fields[8],
-                        reporte2 = fields[9]
-                    ))
+                    if(fields[11]):
+                            ftlist.append(bitacoras(
+                            
+                            indicativo=radioa,
+                            fecha= "20{}-{}-{}".format(fields[0][0:2],fields[0][2:4],fields[0][4:6]),
+                            hora= "{}:{}:{}".format(fields[0][7:9],fields[0][9:11],fields[0][11:]),
+                            enlace= fields[1],
+                            rt = fields[2],
+                            estacion_rec= fields[3],
+                            grid= fields[5],
+                            freq = fields[6],
+                            modulacion = fields[7],
+                            reporte1 =fields[8],
+                            reporte2 = fields[9],
+                            reporte3 = fields[10],
+                            reporte4 = fields[11]
+                        ))
+                    elif (fields[10]):
+                        ftlist.append(bitacoras(
+                            indicativo=radioa,
+                            fecha= "20{}-{}-{}".format(fields[0][0:2],fields[0][2:4],fields[0][4:6]),
+                            hora= "{}:{}:{}".format(fields[0][7:9],fields[0][9:11],fields[0][11:]),
+                            enlace= fields[1],
+                            rt = fields[2],
+                            estacion_rec= fields[3],
+                            grid= fields[5],
+                            freq = fields[6],
+                            modulacion = fields[7],
+                            reporte1 =fields[8],
+                            reporte2 = fields[9],
+                            reporte3 = fields[10] 
+                        ))
+                    else:
+                        ftlist.append(bitacoras(
+                            
+                            indicativo=radioa,
+                            fecha= "20{}-{}-{}".format(fields[0][0:2],fields[0][2:4],fields[0][4:6]),
+                            hora= "{}:{}:{}".format(fields[0][7:9],fields[0][9:11],fields[0][11:]),
+                            enlace= fields[1],
+                            rt = fields[2],
+                            estacion_rec= fields[3],
+                            grid= fields[5],
+                            freq = fields[6],
+                            modulacion = fields[7],
+                            reporte1 =fields[8],
+                            reporte2 = fields[9]
+                        ))
 
                 except Exception as e:
                     messages.error(request,"Problema en fila ")
@@ -471,25 +505,66 @@ def reportes(request):
                     fields = line.split(" ")
                     fields = list(filter(None, fields))
                     cont+=1
+                    print('Este es el length de fields --->', len(fields))
+                    fieldlen = len(fields)
                     try:
-                        
-                        ftlist.append(bitacoras(
-                            
-                            indicativo=radioa,
-                            nombre_estacion = request.POST["estacion"],
-                            fecha= "20{}-{}-{}".format(fields[0][0:2],fields[0][2:4],fields[0][4:6]),
-                            hora= "{}:{}:{}".format(fields[0][7:9],fields[0][9:11],fields[0][11:]),
-                            freq= fields[1],
-                            rt = fields[2],
-                            modo = fields[3],
-                            db = fields[4],
-                            dt = fields[5],
-                            freq_tx = fields[6],
-                            mensaje1 = fields[7],
-                            mensaje2 =fields[8],
-                            mensaje3 = fields[9],
-                            
-                        ))
+                        if (fieldlen == 12):
+                            ftlist.append(bitacoras(
+                                
+                                indicativo=radioa,
+                                nombre_estacion = request.POST["estacion"],
+                                fecha= "20{}-{}-{}".format(fields[0][0:2],fields[0][2:4],fields[0][4:6]),
+                                hora= "{}:{}:{}".format(fields[0][7:9],fields[0][9:11],fields[0][11:]),
+                                freq= fields[1],
+                                rt = fields[2],
+                                modo = fields[3],
+                                db = fields[4],
+                                dt = fields[5],
+                                freq_tx = fields[6],
+                                mensaje1 = fields[7],
+                                mensaje2 =fields[8],
+                                mensaje3 = fields[9],
+                                mensaje4 = fields[10],
+                                mensaje5 = fields[11]
+                                
+                            ))
+                        elif (fieldlen == 11):
+                            ftlist.append(bitacoras(
+                                
+                                indicativo=radioa,
+                                nombre_estacion = request.POST["estacion"],
+                                fecha= "20{}-{}-{}".format(fields[0][0:2],fields[0][2:4],fields[0][4:6]),
+                                hora= "{}:{}:{}".format(fields[0][7:9],fields[0][9:11],fields[0][11:]),
+                                freq= fields[1],
+                                rt = fields[2],
+                                modo = fields[3],
+                                db = fields[4],
+                                dt = fields[5],
+                                freq_tx = fields[6],
+                                mensaje1 = fields[7],
+                                mensaje2 =fields[8],
+                                mensaje3 = fields[9],
+                                mensaje4 = fields[10]
+                                
+                            ))
+                        else:
+                            ftlist.append(bitacoras(
+                                
+                                indicativo=radioa,
+                                nombre_estacion = request.POST["estacion"],
+                                fecha= "20{}-{}-{}".format(fields[0][0:2],fields[0][2:4],fields[0][4:6]),
+                                hora= "{}:{}:{}".format(fields[0][7:9],fields[0][9:11],fields[0][11:]),
+                                freq= fields[1],
+                                rt = fields[2],
+                                modo = fields[3],
+                                db = fields[4],
+                                dt = fields[5],
+                                freq_tx = fields[6],
+                                mensaje1 = fields[7],
+                                mensaje2 =fields[8],
+                                mensaje3 = fields[9],
+                                
+                            ))
 
                     except Exception as e:
                         #messages.error(request,"Problema en fila ")

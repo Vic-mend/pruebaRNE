@@ -30,6 +30,8 @@ class bitacoras(models.Model):
     mensaje1 = models.CharField(max_length=10, blank=True)
     mensaje2 = models.CharField(max_length=10, blank=True)
     mensaje3 = models.CharField(max_length=10, blank=True)
+    mensaje4 = models.CharField(max_length=10, blank=True)
+    mensaje5 = models.CharField(max_length=10, blank=True)
 
 class estaciones_terrenas(models.Model):
     indicativo = models.ForeignKey(radioaficionados, on_delete=models.CASCADE)
