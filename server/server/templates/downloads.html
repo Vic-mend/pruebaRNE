@@ -9,45 +9,95 @@
     {%endif%}
 
 <div style="height: calc(100vh - 200px);">
+    <div class="container p-3 mt-3 border rounded" style="border-width: 2px!important;">
+        <!-- <br/> -->
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Radioaficionados</a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Estaciones</a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Reportes</a>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active mt-3" id="home" role="tabpanel" aria-labelledby="home-tab">
+                <div class="d-flex justify-content-center">
+                    <h3>Aquí puedes descargar todos los datos de los radioaficionados</h3>
+                </div>
+                <br/><br/><br/><br/>
+                <form id="reporte" name="reporte" action="/download_usuarios/"  method="POST" enctype="multipart/form-data" novalidate  style="display: flex; flex-wrap: wrap; justify-content: space-evenly;">
+                    {% csrf_token %}
+                    <div class="input-group d-flex justify-content-center" style="max-width: 100%;">
+                        <div class="d-flex align-items-center">
+                            <button type="submit" class="btn btn-outline-success"><span style="margin-right:5px;"></span>Descargar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
 
-<div class="container p-3 mt-3 border rounded" style="border-width: 2px!important;">
-    <br/>
-    <div class="d-flex justify-content-center">
-        <h3>Aquí puedes descargar los datos recopilados de los radioaficionados</h3>
-    </div>
-    <br/><br/><br/><br/>
-    <form id="reporte" name="reporte" action="/download/"  method="POST" onsubmit="return handleSubir() " enctype="multipart/form-data" novalidate  style="display: flex; flex-wrap: wrap; justify-content: space-evenly;">
-        {% csrf_token %}
-        <div class="input-group d-flex justify-content-center" style="max-width: 80%;">
-            <br/>
-            <div class="mb-0 form-inline">
-                <label for="date1" class="col-form-label">Del:  </label>&nbsp 
-                <input type="date" class="form-control" id="date1" name="date1" required>
-                <div class="invalid-feedback">
-                    Escoja una fecha
+            <div class="tab-pane fade mt-3" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                <div class="d-flex justify-content-center">
+                    <h3>Aquí puedes descargar todos los datos de las estaciones de los radioaficionados</h3>
                 </div>
+                <br/><br/><br/><br/>
+                <form id="reporte" name="reporte" action="/download_estaciones/"  method="POST" enctype="multipart/form-data" novalidate  style="display: flex; flex-wrap: wrap; justify-content: space-evenly;">
+                    {% csrf_token %}
+                    <div class="input-group d-flex justify-content-center" style="max-width: 100%;">
+                        <div class="d-flex align-items-center">
+                            <button type="submit" class="btn btn-outline-success"><span style="margin-right:5px;"></span>Descargar</button>
+                        </div>
+                    </div>
+                </form>
             </div>
-            &nbsp &nbsp
-            <div class="mb-0 form-inline">
-                <label for="date2" class="col-form-label">Al: </label>&nbsp 
-                <input type="date" class="form-control" id="date2" name="date2" required>
-                <div class="invalid-feedback">
-                    Escoja una fecha
+
+            <div class="tab-pane fade mt-3" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+                <div class="d-flex justify-content-center">
+                    <h3>Aquí puedes descargar los datos recopilados de los radioaficionados</h3>
                 </div>
-            </div>
-            &nbsp &nbsp &nbsp &nbsp
-            <div class="d-flex align-items-center">
-                <button type="submit" class="btn btn-outline-success"><span style="margin-right:5px;"></span>Descargar</button>
+                <br/><br/><br/><br/>
+                <form id="reporte" name="reporte" action="/download_reportes/"  method="POST" onsubmit="return handleSubir() " enctype="multipart/form-data" novalidate  style="display: flex; flex-wrap: wrap; justify-content: space-evenly;">
+                    {% csrf_token %}
+                    <div class="input-group d-flex justify-content-center" style="max-width: 80%;">
+                        <br/>
+                        <div class="mb-0 form-inline">
+                            <label for="date1" class="col-form-label">Del:  </label>&nbsp 
+                            <input type="date" class="form-control" id="date1" name="date1" required>
+                            <div class="invalid-feedback">
+                                Escoja una fecha
+                            </div>
+                        </div>
+                        &nbsp &nbsp
+                        <div class="mb-0 form-inline">
+                            <label for="date2" class="col-form-label">Al: </label>&nbsp 
+                            <input type="date" class="form-control" id="date2" name="date2" required>
+                            <div class="invalid-feedback">
+                                Escoja una fecha
+                            </div>
+                        </div>
+                        &nbsp &nbsp &nbsp &nbsp
+                        <div class="d-flex align-items-center">
+                            <button type="submit" class="btn btn-outline-success"><span style="margin-right:5px;"></span>Descargar</button>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
-    </form>
-</div>
+
+        
+    </div>
 </div>
 
 <script type="text/javascript">
+    $('#myTab a').on('click', function (e) {
+        e.preventDefault()
+        $(this).tab('show')
+    })
 
     setTimeout(function(){
-    $('#warning-alert').remove();
+        $('#warning-alert').remove();
     }, 5000);
 
     function handleSubir(){

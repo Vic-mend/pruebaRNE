@@ -149,10 +149,53 @@ def logoutUser(request):
     return redirect("index")
 
 
-# ------------------------------------------> Download data
+# ------------------------------------------> Download Page
 @allowed_users(allowed_roles = ['analistas'])
 @login_required(login_url='index')
 def download(request):
+    usr2 = request.user.groups.filter(name='analistas').exists()
+    context={'grup': usr2}
+    flagadmin = request.user.groups.filter(name='administrators').exists()
+    context['adpriv']= flagadmin
+    if request.method=="GET":
+        return render(request,"downloads.html",context)
+
+# ------------------------------------------> Download Users
+@allowed_users(allowed_roles = ['analistas'])
+@login_required(login_url='index')
+def download_usuarios(request):
+    usuarios = radioaficionados.objects.all().values_list('indicativo', 'nombre', 'apellidoP', 'apellidoM', 'pais', 'estado', 'municipio')
+
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="usuarios.csv"'
+
+    response.write(u'\ufeff'.encode('utf8'))
+    writer = csv.writer(response)
+    writer.writerow(['Indicativo', 'Nombre', 'Apellido Paterno', 'Apellido Materno', 'Pais', 'Estado', 'Municipio/Ciudad'])
+    for usuario in usuarios:
+        writer.writerow(usuario)
+    return response
+
+# ------------------------------------------> Download Stations
+@allowed_users(allowed_roles = ['analistas'])
+@login_required(login_url='index')
+def download_estaciones(request):
+    estaciones = estaciones_terrenas.objects.all().values_list('indicativo', 'nombre_estacion', 'marca', 'modelo', 'antena', 'tipo_antena', 'ganancia', 'polarizacion', 'altura', 'modulacion', 'grid')
+
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="estaciones.csv"'
+
+    response.write(u'\ufeff'.encode('utf8'))
+    writer = csv.writer(response)
+    writer.writerow(['ID Indicativo', 'Nombre Estacion', 'Marca', 'Modelo', 'Antena', 'Tipo de Antena','Ganancia (dB)', 'Polarizacion', 'Altura (m)', 'Modulacion', 'Grid Locator'])
+    for estacion in estaciones:
+        writer.writerow(estacion)
+    return response
+
+# ------------------------------------------> Download Reports
+@allowed_users(allowed_roles = ['analistas'])
+@login_required(login_url='index')
+def download_reportes(request):
     usr2 = request.user.groups.filter(name='analistas').exists()
     context={'grup': usr2}
     flagadmin = request.user.groups.filter(name='administrators').exists()
@@ -164,20 +207,22 @@ def download(request):
             date1 = request.POST['date1']
             date2 = request.POST['date2']
 
-            bitacorasQ = bitacoras.objects.filter(fecha__range=[date1,date2]).values_list('fecha', 'hora', 'mensaje1', 'mensaje2', 'modo', 'freq', 'mensaje3', 'indicativo_id', 'nombre_estacion', 'db', 'dt', 'freq_tx', 'rt')
+            bitacorasQ = bitacoras.objects.filter(fecha__range=[date1,date2]).values_list('indicativo_id', 'nombre_estacion', 'fecha', 'hora', 'freq', 'rt', 'modo', 'db', 'dt', 'freq_tx', 'mensaje1', 'mensaje2', 'mensaje3', 'mensaje4', 'mensaje5', )
            
             if not bitacorasQ:
-                context = {'grup': usr2,'warning' : 'Al parecer no existen datos con estas fechas, intenta con otras fechas.'}
+                context['warning']='Al parecer no existen datos con estas fechas, intenta con otras fechas.'
                 return render(request,"downloads.html",context)
             else:
                 response = HttpResponse(content_type='text/csv')
                 response['Content-Disposition'] = 'attachment; filename="bitacoras.csv"'
+                response.write(u'\ufeff'.encode('utf8'))
                 writer = csv.writer(response)
-                writer.writerow(['Fecha', 'Hora', 'Mensaje 1', 'Mensaje 2', 'Modo', 'Frecuencia', 'Mensaje 3', 'Indicativo Id', 'Nombre Estacion', 'DB', 'DT', 'Frecuencia TX', 'RT'])
+                writer.writerow(['ID Indicativo', 'ID Estacion', 'Fecha', 'Hora', 'Frecuencia (MHz)', 'R/T', 'Modo', 'Ganancia (dB)', 'DT', 'Frecuencia TX', 'Mensaje 1', 'Mensaje 2', 'Mensaje 3', 'Mensaje 4', 'Mensaje 5'])
                 for bitacora in bitacorasQ:
                     writer.writerow(bitacora)
                 return response
-    
+
+
 # ------------------------------------------> Upload CSV Handler
 @login_required(login_url='index')
 def csvhandler(request):

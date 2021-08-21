@@ -21,6 +21,9 @@ urlpatterns = [
     path('reportes/', reportes, name="reportes"),
     path('commentary/', handleComments, name="handleComments"),
     path('download/', download, name="download"),
+    path('download_usuarios/', download_usuarios, name="download_usuarios"),
+    path('download_estaciones/', download_estaciones, name="download_estaciones"),
+    path('download_reportes/', download_reportes, name="download_reportes"),
     path('mensajes/', msgAdmin, name="mensajesAdmin"),
     path('deletemsg/<str:pk>/', deletemsg, name="deletemsg"),
 ]
