@@ -550,7 +550,7 @@ def reportes(request):
                     fields = line.split(" ")
                     fields = list(filter(None, fields))
                     cont+=1
-                    print('Este es el length de fields --->', len(fields))
+                    # print('Este es el length de fields --->', len(fields))
                     fieldlen = len(fields)
                     try:
                         if (fieldlen == 12):
@@ -617,7 +617,7 @@ def reportes(request):
                 context["uploadFlag"] = True
                 print(len(ftlist))
                 print(len(errlist))
-                batch_size = 100
+                batch_size = 300
                 x=0
                 while True:
                     
