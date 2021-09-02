@@ -72,7 +72,7 @@
             {% for report in reports %}
               <tr>
                 <th scope="row">{{report.fecha}}</th>
-                <td>{{report.hora}}</td>
+                <td>{{report.hora |date:"G:i:s"}}</td>
                 <td>{{report.freq}}</td>
                 <td>{{report.rt}}</td>
                 <td>{{report.modo}}</td>
